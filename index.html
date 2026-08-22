@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#6C5CE7"><title>Greetingschool — Level 1</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:#f4f5fb;color:#202238}
+button{font:inherit;border:0;cursor:pointer}.app{max-width:560px;margin:auto;min-height:100vh;background:#fff}
+header{padding:20px;background:linear-gradient(135deg,#6c5ce7,#8f7cf5);color:#fff;border-radius:0 0 28px 28px}
+.top{display:flex;justify-content:space-between;align-items:center}.logo{font-size:21px;font-weight:800}.avatar{background:#ffffff33;padding:9px 12px;border-radius:16px}
+h1{font-size:25px;margin:18px 0 5px}.sub{opacity:.92}.bar{height:9px;background:#ffffff33;border-radius:10px;overflow:hidden;margin-top:16px}.bar i{display:block;height:100%;background:#fff;width:18%}
+main{padding:18px 18px 100px}.screen{display:none}.screen.active{display:block}.muted{color:#85899e;font-size:13px;line-height:1.45}
+.card{padding:17px;border:1px solid #ececf4;border-radius:21px;margin-bottom:12px;box-shadow:0 4px 16px #2221}.hero{background:#faf9ff;border-color:#e4e0ff}
+.primary{background:#6c5ce7;color:#fff;border-radius:14px;padding:13px 16px;font-weight:800;width:100%;margin-top:12px}.secondary{background:#f0efff;color:#5b4bd8;border-radius:13px;padding:10px 13px;font-weight:800}
+.sectionTitle{font-size:18px;font-weight:800;margin:20px 0 11px}.streak{display:flex;gap:12px;align-items:center;padding:15px;background:#fff5db;border-radius:20px;margin-bottom:15px}
+.unit{padding:15px;border:1px solid #ececf4;border-radius:20px;margin-bottom:10px;cursor:pointer}.unitHead{display:flex;align-items:center;gap:12px}.unitNum{width:40px;height:40px;border-radius:13px;background:#eeeaff;color:#5b4bd8;display:grid;place-items:center;font-weight:900}.unitTitle{font-size:16px;font-weight:900}.arrow{margin-left:auto;font-size:28px;color:#aaa}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.chip{background:#f0efff;color:#5b4bd8;padding:6px 8px;border-radius:9px;font-size:11px;font-weight:800}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{padding:13px;border-radius:17px;background:#f8f8fc}.stat b{font-size:18px}
+.lesson{padding:14px;border:1px solid #eeeef5;border-radius:17px;margin:9px 0}.lesson b{display:block;margin-bottom:4px}
+.tag{display:inline-block;padding:5px 8px;border-radius:9px;background:#eaf9f2;color:#16845b;font-size:11px;font-weight:900}
+.modeRow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.mode{padding:11px 7px;background:#f5f4fb;border-radius:13px;color:#555a72;font-weight:800}.mode.active{background:#6c5ce7;color:#fff}
+.question{font-size:22px;font-weight:900;line-height:1.35;margin:20px 0}.answers{display:grid;gap:9px}.answer{background:#f7f7fb;padding:14px;border-radius:14px;text-align:left;border:2px solid transparent;font-weight:800}.answer.correct{border-color:#35b779;background:#ecfbf4}.answer.wrong{border-color:#ef6b73;background:#fff0f1}
+.feedback{margin-top:14px;padding:13px;border-radius:14px;background:#f8f7ff}.back{background:#f1f1f7;padding:10px 13px;border-radius:13px;margin-bottom:12px;font-weight:800}
+.listenBox{padding:18px;border-radius:20px;background:#f8f7ff;text-align:center;margin:12px 0}.speaker{width:70px;height:70px;border-radius:50%;background:#6c5ce7;color:#fff;font-size:30px}.speed{font-size:12px;color:#85899e;margin-top:8px}
+.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(560px,100%);background:#fff;border-top:1px solid #eeeef5;display:grid;grid-template-columns:repeat(3,1fr);padding:8px;z-index:10}.nav{background:none;color:#9295a8;padding:8px;font-weight:800}.nav.active{color:#6c5ce7}
+
+.register-screen{min-height:100vh;padding:28px 20px 40px;background:linear-gradient(180deg,#faf9ff,#fff)}
+.register-logo{text-align:center;font-size:26px;font-weight:900;color:#5b4bd8;margin:10px 0 24px}
+.register-title{font-size:25px;font-weight:900;text-align:center;margin:0 0 8px}
+.register-sub{text-align:center;color:#85899e;font-size:14px;line-height:1.45;margin-bottom:22px}
+.form-card{padding:20px;border:1px solid #e9e7f5;border-radius:22px;background:#fff;box-shadow:0 5px 20px #2221}
+.form-label{display:block;font-size:13px;font-weight:800;margin:0 0 7px}
+.form-input{width:100%;padding:14px;border:1.5px solid #dddde8;border-radius:13px;font-size:16px;outline:none;margin-bottom:14px;background:#fff}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.consent{display:flex;gap:9px;align-items:flex-start;font-size:11px;color:#777b90;line-height:1.4;margin:4px 0 12px}
+.error{display:none;background:#fff0f1;color:#c33f49;padding:10px 12px;border-radius:12px;font-size:12px;margin-bottom:10px}
+.user-chip{display:inline-flex;align-items:center;gap:7px;background:#ffffff33;padding:7px 10px;border-radius:13px;font-size:12px}
+.logout{background:#fff0f1;color:#c33f49;border-radius:10px;padding:7px 9px;font-size:11px;font-weight:800}
+
+.speaking-card{padding:18px;border:1px solid #e8e6f4;border-radius:21px;background:#faf9ff;margin:12px 0}
+.speak-word{font-size:30px;font-weight:900;text-align:center;margin:12px 0}
+.mic-btn{display:block;width:82px;height:82px;border-radius:50%;background:#6c5ce7;color:#fff;font-size:34px;margin:14px auto}
+.mic-btn.listening{animation:pulse 1.1s infinite;background:#e85d75}
+.speak-status{text-align:center;font-size:13px;color:#777b90;min-height:20px}
+.speak-result{padding:12px;border-radius:14px;background:#fff;margin-top:12px;line-height:1.5}
+.speak-score{font-size:25px;font-weight:900;text-align:center;margin-top:8px}
+.sentence-list{display:grid;gap:8px;margin-top:12px}
+.sentence-item{padding:12px;border:1px solid #e8e6f4;border-radius:14px;background:#fff}
+.sentence-item b{display:block;margin-bottom:7px}
+@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.06)}100%{transform:scale(1)}}
+
+.mic-permission{margin-top:12px;padding:14px;border-radius:16px;background:#fff7df;border:1px solid #f0df9a;font-size:13px;line-height:1.45}
+.mic-permission button{margin-top:9px;background:#6c5ce7;color:#fff;padding:11px 14px;border-radius:12px;font-weight:800}
+.mic-ok{background:#eaf9f2;border-color:#b9e8d2;color:#187451}
+.mic-error{background:#fff0f1;border-color:#f0b9be;color:#a93d48}
+</style></head><body><div class="app">
+<header><div class="top"><div class="logo">🎓 Greetingschool</div><div id="userHeader" class="user-chip">👦 <span>Профиль</span></div></div>
+<h1>Level 1 · Family and Friends 1</h1><div class="sub">Class Book + Workbook · тренировки Words + Grammar + Listening</div>
+<div class="bar"><i></i></div><div style="font-size:12px;margin-top:7px">15 Units · адаптивные задания</div></header>
+<main>
+<section id="register" class="screen active">
+<div class="register-screen">
+<div class="register-logo">🎓 Greetingschool</div>
+<h2 class="register-title">Создай свой профиль</h2>
+<div class="register-sub">Заполни данные один раз — приложение сохранит твой профиль и прогресс.</div>
+<div class="form-card">
+<div id="regError" class="error"></div>
+<label class="form-label">ФИО</label>
+<input id="fullName" class="form-input" type="text" autocomplete="name" placeholder="Иванов Иван Иванович">
+<div><label class="form-label">Возраст</label><input id="age" class="form-input" type="number" min="6" max="18" placeholder="10"></div>
+<label class="form-label">Email</label>
+<input id="email" class="form-input" type="email" autocomplete="email" placeholder="example@email.com">
+<label class="form-label">Пароль</label>
+<input id="password" class="form-input" type="password" autocomplete="new-password" placeholder="Не менее 6 символов">
+<label class="consent"><input id="consent" type="checkbox"><span>Я согласен(на) на обработку введённых данных для работы профиля в приложении.</span></label>
+<button class="primary" onclick="registerUser()">Создать аккаунт →</button>
+</div>
+<div style="text-align:center;margin-top:16px;color:#9a9daf;font-size:11px">Для реального запуска данные нужно хранить на защищённом сервере.</div>
+</div>
+</section>
+
+<section id="home" class="screen">
+<div class="streak">🔥 <div><b>Ежедневная тренировка</b><div class="muted">10 минут английского каждый день</div></div></div>
+<div class="card hero"><b>🎯 Сегодняшняя миссия</b><h2>Unit 1 · What’s this?</h2><div class="muted">Words · Grammar · Listening</div><button class="primary" onclick="openUnit(1)">Начать</button></div>
+<div class="grid"><div class="stat">⭐<br><b id="xp">0 XP</b><div class="muted">сегодня</div></div><div class="stat">🔥<br><b>1 день</b><div class="muted">серия</div></div></div>
+<div class="sectionTitle">Units 1–15</div><article class="unit" onclick="openUnit(1)"><div class="unitHead"><div class="unitNum">1</div><div><div class="unitTitle">What’s this?</div><div class="muted">School things</div></div><div class="arrow">›</div></div><div class="chips"><span class="chip">pen</span><span class="chip">pencil</span><span class="chip">rubber</span><span class="chip">ruler</span><span class="chip">book</span><span class="chip">door</span><span class="chip">bag</span><span class="chip">window</span></div></article><article class="unit" onclick="openUnit(2)"><div class="unitHead"><div class="unitNum">2</div><div><div class="unitTitle">Playtime!</div><div class="muted">Toys</div></div><div class="arrow">›</div></div><div class="chips"><span class="chip">doll</span><span class="chip">ball</span><span class="chip">teddy</span><span class="chip">pencil case</span><span class="chip">game</span><span class="chip">scooter</span><span class="chip">kite</span><span class="chip">bike</span></div></article><article class="unit" onclick="openUnit(3)"><div class="unitHead"><div class="unitNum">3</div><div><div class="unitTitle">This is my nose!</div><div class="muted">My body</div></div><div class="arrow">›</div></div><div class="chips"><span class="chip">nose</span><span class="chip">face</span><span class="chip">arm</span><span class="chip">arms</span><span class="chip">legs</span><span class="chip">ears</span><span class="chip">eyes</span><span class="chip">hands</span></div></article><article class="unit" onclick="openUnit(4)"><div class="unitHead"><div class="unitNum">4</div><div><div class="unitTitle">He’s a hero!</div><div class="muted">Jobs</div></div><div class="arrow">›</div></div><div class="chips"><span class="chip">teacher</span><span class="chip">doctor</span><span class="chip">nurse</span><span class="chip">fireman</span><span class="chip">pupil</span><span class="chip">pilot</span><span class="chip">postman</span><span class="chip">farmer</span></div></article><article class="unit" onclick="openUnit(5)"><div class="unitHead"><div class="unitNum">5</div><div><div class="unitTitle">Where’s the ball?</div><div class="muted">The park</div></div><div class="arrow">›</div></div><div class="chips"><span class="chip">park</span><span class="chip">ball</span><span class="chip">kite</span><span class="chip">seesaw</span><span class="chip">swing</span><span class="chip">pool</span><span class="chip">frisbee</span><span class="chip">slide</span></div></article><article class="unit" onclick="openUnit(6)"><div class="unitHead"><div class="unitNum">6</div><div><div class="unitTitle">Billy’s teddy!</div><div class="muted">My family</div></div><div class="arrow">›</div></div><div class="chips"><span class="chip">mum</span><span class="chip">dad</span><span class="chip">sister</span><span class="chip">brother</span><span class="chip">grandma</span><span class="chip">grandpa</span><span class="chip">aunt</span><span class="chip">uncle</span></div></article><article class="unit" onclick="openUnit(7)"><div class="unitHead"><div class="unitNum">7</div><div><div class="unitTitle">Are these his trousers?</div><div class="muted">My clothes</div></div><div class="arrow">›</div></div><div class="chips"><span class="chip">dress</span><span class="chip">socks</span><span class="chip">T-shirt</span><span class="chip">trousers</span><span class="chip">shorts</span><span class="chip">coat</span><span class="chip">hat</span><span class="chip">shoes</span></div></article><article class="unit" onclick="openUnit(8)"><div class="unitHead"><div class="unitNum">8</div><div><div class="unitTitle">Where’s Grandma?</div><div class="muted">My house</div></div><div class="arrow">›</div></div><div class="chips"><span class="chip">kitchen</span><span class="chip">living room</span><span class="chip">dining room</span><span class="chip">bedroom</span><span class="chip">bathroom</span><span class="chip">garden</span><span class="chip">upstairs</span><span class="chip">downstairs</span></div></article><article class="unit" onclick="openUnit(9)"><div class="unitHead"><div class="unitNum">9</div><div><div class="unitTitle">Lunchtime!</div><div class="muted">My lunch box</div></div><div class="arrow">›</div></div><div class="chips"><span class="chip">lunch box</span><span class="chip">sandwich</span><span class="chip">apple</span><span class="chip">banana</span><span class="chip">pear</span><span class="chip">grapes</span><span class="chip">tomato</span><span class="chip">drink</span></div></article><article class="unit" onclick="openUnit(10)"><div class="unitHead"><div class="unitNum">10</div><div><div class="unitTitle">A new friend!</div><div class="muted">My friends / Shapes</div></div><div class="arrow">›</div></div><div class="chips"><span class="chip">friend</span><span class="chip">hair</span><span class="chip">eyes</span><span class="chip">blond</span><span class="chip">brown</span><span class="chip">black</span><span class="chip">curly</span><span class="chip">straight</span></div></article><article class="unit" onclick="openUnit(11)"><div class="unitHead"><div class="unitNum">11</div><div><div class="unitTitle">I like monkeys!</div><div class="muted">The zoo / adjectives</div></div><div class="arrow">›</div></div><div class="chips"><span class="chip">monkey</span><span class="chip">elephant</span><span class="chip">giraffe</span><span class="chip">tiger</span><span class="chip">snake</span><span class="chip">parrot</span><span class="chip">lion</span><span class="chip">polar bear</span></div></article><article class="unit" onclick="openUnit(12)"><div class="unitHead"><div class="unitNum">12</div><div><div class="unitTitle">Dinnertime!</div><div class="muted">Food / Drinks</div></div><div class="arrow">›</div></div><div class="chips"><span class="chip">rice</span><span class="chip">meat</span><span class="chip">carrots</span><span class="chip">yogurt</span><span class="chip">bread</span><span class="chip">fish</span><span class="chip">juice</span><span class="chip">water</span></div></article><article class="unit" onclick="openUnit(13)"><div class="unitHead"><div class="unitNum">13</div><div><div class="unitTitle">Tidy up!</div><div class="muted">My bedroom / Numbers 11–20</div></div><div class="arrow">›</div></div><div class="chips"><span class="chip">bed</span><span class="chip">blanket</span><span class="chip">pillow</span><span class="chip">cupboard</span><span class="chip">shelf</span><span class="chip">rug</span><span class="chip">bin</span><span class="chip">books</span></div></article><article class="unit" onclick="openUnit(14)"><div class="unitHead"><div class="unitNum">14</div><div><div class="unitTitle">Action Boy can run!</div><div class="muted">Verbs</div></div><div class="arrow">›</div></div><div class="chips"><span class="chip">walk</span><span class="chip">run</span><span class="chip">fly</span><span class="chip">swim</span><span class="chip">jump</span><span class="chip">sing</span><span class="chip">write</span><span class="chip">draw</span></div></article><article class="unit" onclick="openUnit(15)"><div class="unitHead"><div class="unitNum">15</div><div><div class="unitTitle">Let’s play ball!</div><div class="muted">The beach</div></div><div class="arrow">›</div></div><div class="chips"><span class="chip">beach</span><span class="chip">ball</span><span class="chip">sandcastle</span><span class="chip">ice cream</span><span class="chip">crab</span><span class="chip">sea</span><span class="chip">shells</span><span class="chip">hat</span></div></article>
+</section>
+
+<section id="unit" class="screen"><button class="back" onclick="show('home')">← Level 1</button><div id="unitContent"></div></section>
+
+<section id="quiz" class="screen"><button class="back" onclick="show('unit')">← Назад</button>
+<div class="modeRow"><button class="mode active" id="mWords" onclick="startMode('words')">🧠 Words</button><button class="mode" id="mGrammar" onclick="startMode('grammar')">🔤 Grammar</button><button class="mode" id="mListen" onclick="startMode('listen')">🎧 Listen</button></div>
+<span class="tag" id="quizTag">WORDS · 1/5</span><div id="listenBox" class="listenBox" style="display:none"><button class="speaker" onclick="speakCurrent()">🔊</button><div><b>Нажми, чтобы прослушать</b></div><div class="speed">Работает через встроенный голос устройства</div></div>
+<div id="quizQuestion" class="question"></div><div id="answers" class="answers"></div><div id="feedback" class="feedback"></div><button id="nextBtn" class="primary" style="display:none" onclick="nextQuestion()">Следующее →</button></section>
+
+
+<section id="speaking" class="screen">
+<button class="back" onclick="show('unit')">← Назад</button>
+<span class="tag">SPEAKING · PRONUNCIATION</span>
+<div class="speaking-card">
+<div class="muted" style="text-align:center">Сначала повтори слово. Затем скажи его в предложениях.</div>
+<div id="speakStage" class="tag" style="margin:12px auto;display:table">1 · СЛОВО</div>
+<div id="speakWord" class="speak-word">pen</div>
+<button id="micButton" class="mic-btn" onclick="startRecognition()">🎙️</button>
+<div id="speakStatus" class="speak-status">Нажми на микрофон и произнеси слово.</div>
+<div id="micPermission" class="mic-permission">
+  <b>🎙️ Для Speaking нужен доступ к микрофону.</b>
+  <div id="micPermissionText">Нажми «Разрешить микрофон», затем разреши доступ в окне браузера.</div>
+  <button onclick="requestMicPermission()">Разрешить микрофон</button>
+</div>
+
+<div id="speakResult" class="speak-result" style="display:none"></div>
+<button class="secondary" style="display:block;margin:12px auto 0" onclick="speakTarget()">🔊 Послушать образец</button>
+</div>
+<div id="sentenceArea" style="display:none"><div class="sectionTitle">Теперь скажи слово в предложениях</div><div id="sentenceList" class="sentence-list"></div></div>
+<button id="speakNext" class="primary" style="display:none" onclick="nextSpeakingItem()">Следующее слово →</button>
+</section>
+<section id="progress" class="screen"><div class="sectionTitle">Мой прогресс</div><div class="card"><h2>Level 1</h2><div class="muted">Family and Friends 1</div><div class="bar" style="background:#eee;margin-top:12px"><i style="background:#6c5ce7;width:18%"></i></div><p><b>18%</b> курса</p></div><div class="grid"><div class="stat">📚<br><b>15</b><div class="muted">Units</div></div><div class="stat">🧠<br><b>Words</b><div class="muted">повторяются адаптивно</div></div></div></section>
+</main>
+<nav class="bottom"><button class="nav active" onclick="show('home')">🏠<br>Курс</button><button class="nav" onclick="startMode('words')">⚡<br>Тренировка</button><button class="nav" onclick="show('progress')">📈<br>Прогресс</button></nav>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL="https://pfdtyegtannhkipezgga.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_rlSJEG50x9jxleyMgJe4-g_Ll_H_iaV";
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+let registeredUser=null;
+let authUser=null;
+function showRegisterError(text){const e=document.getElementById('regError');e.textContent=text;e.style.display='block'}
+function clearRegisterError(){const e=document.getElementById('regError');e.textContent='';e.style.display='none'}
+async function registerUser(){
+ clearRegisterError();
+ const name=document.getElementById('fullName').value.trim();
+ const age=Number(document.getElementById('age').value);
+ const email=document.getElementById('email').value.trim().toLowerCase();
+ const password=document.getElementById('password').value;
+ if(name.length<5)return showRegisterError('Пожалуйста, укажи полное ФИО.');
+ if(age<6||age>18)return showRegisterError('Возраст должен быть от 6 до 18 лет.');
+ if(!/^\S+@\S+\.\S+$/.test(email))return showRegisterError('Укажи корректный email.');
+ if(password.length<6)return showRegisterError('Пароль должен содержать минимум 6 символов.');
+ if(!document.getElementById('consent').checked)return showRegisterError('Нужно подтвердить согласие на обработку данных.');
+ const btn=document.querySelector('#register .primary'); if(btn){btn.disabled=true;btn.textContent='Создаём аккаунт…'}
+ try{
+   const {data,error}=await supabaseClient.auth.signUp({email,password});
+   if(error) throw error;
+   authUser=data.user;
+   if(!authUser) throw new Error('Не удалось создать пользователя.');
+   const {data:student,error:studentError}=await supabaseClient.from('students').insert({full_name:name,age,level_id:(await getLevel1Id()),auth_user_id:authUser.id}).select().single();
+   if(studentError) throw studentError;
+   registeredUser={id:student.id,fullName:name,age,email,createdAt:new Date().toISOString()};
+   localStorage.setItem('greetingschool_user',JSON.stringify(registeredUser));
+   enterApp();
+ }catch(err){
+   console.error(err);
+   showRegisterError(err.message||'Не удалось создать аккаунт.');
+ }finally{if(btn){btn.disabled=false;btn.textContent='Создать аккаунт →'}}
+}
+async function getLevel1Id(){
+ const {data,error}=await supabaseClient.from('levels').select('id').eq('number',1).single();
+ if(error)throw error; return data.id;
+}
+async function loadCurrentStudent(){
+ const {data:{user}}=await supabaseClient.auth.getUser();
+ if(!user)return false;
+ authUser=user;
+ const {data:student,error}=await supabaseClient.from('students').select('id,full_name,age').eq('auth_user_id',user.id).single();
+ if(error||!student)return false;
+ registeredUser={id:student.id,fullName:student.full_name,age:student.age,email:user.email};
+ localStorage.setItem('greetingschool_user',JSON.stringify(registeredUser));
+ return true;
+}
+function enterApp(){
+ const parts=registeredUser.fullName.split(/\s+/);
+ const firstName=parts[1]||parts[0];
+ const u=document.getElementById('userHeader');
+ if(u){u.innerHTML='👦 <span>'+firstName+'</span>';u.onclick=showProfileMenu;}
+ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+ document.getElementById('home').classList.add('active');
+ document.querySelector('.bottom').style.display='grid';
+}
+function showProfileMenu(){
+ const c=document.getElementById('unitContent');
+ c.innerHTML='<div class="card hero"><span class="tag">МОЙ ПРОФИЛЬ</span><h2>'+registeredUser.fullName+'</h2><p class="muted">Возраст: '+registeredUser.age+'</p><p class="muted">Email: '+registeredUser.email+'</p><button class="logout" onclick="logoutUser()">Выйти из профиля</button></div>';
+ show('unit');
+}
+async function logoutUser(){
+ await supabaseClient.auth.signOut();
+ localStorage.removeItem('greetingschool_user');registeredUser=null;authUser=null;
+ document.querySelector('.bottom').style.display='none';
+ document.getElementById('fullName').value='';document.getElementById('age').value='';document.getElementById('email').value='';document.getElementById('password').value='';document.getElementById('consent').checked=false;
+ show('register');
+}
+document.addEventListener('DOMContentLoaded',async()=>{
+ document.querySelector('.bottom').style.display='none';
+ const ok=await loadCurrentStudent();
+ if(ok){enterApp();return;}
+ localStorage.removeItem('greetingschool_user');show('register');
+});
+
+const units=[{"n": 1, "title": "What’s this?", "topic": "School things", "grammar": "What’s this? — It’s a pen.", "phonics": "Initial sounds A–D", "vocab": ["pen", "pencil", "rubber", "ruler", "book", "door", "bag", "window", "bookcase"]}, {"n": 2, "title": "Playtime!", "topic": "Toys", "grammar": "This is my/your… · Is this your…? — Yes, it is. / No, it isn’t.", "phonics": "Initial sounds E–H", "vocab": ["doll", "ball", "teddy", "pencil case", "game", "scooter", "kite", "bike", "train", "puzzle", "car"]}, {"n": 3, "title": "This is my nose!", "topic": "My body", "grammar": "This is… · These are…", "phonics": "Initial sounds I–L", "vocab": ["nose", "face", "arm", "arms", "legs", "ears", "eyes", "hands", "fingers"]}, {"n": 4, "title": "He’s a hero!", "topic": "Jobs", "grammar": "She’s / He’s a… · Is she / he a…?", "phonics": "Initial sounds M–P", "vocab": ["teacher", "doctor", "nurse", "fireman", "pupil", "pilot", "postman", "farmer", "policeman"]}, {"n": 5, "title": "Where’s the ball?", "topic": "The park", "grammar": "Where’s the ball? — It’s in / on / under…", "phonics": "Initial sounds Q–U", "vocab": ["park", "ball", "kite", "seesaw", "swing", "pool", "frisbee", "slide", "ice cream"]}, {"n": 6, "title": "Billy’s teddy!", "topic": "My family", "grammar": "Possessive ’s", "phonics": "Initial sounds V–Z", "vocab": ["mum", "dad", "sister", "brother", "grandma", "grandpa", "aunt", "uncle", "cousin"]}, {"n": 7, "title": "Are these his trousers?", "topic": "My clothes", "grammar": "This is her / his… · Are these his / her…?", "phonics": "The alphabet", "vocab": ["dress", "socks", "T-shirt", "trousers", "shorts", "coat", "hat", "shoes"]}, {"n": 8, "title": "Where’s Grandma?", "topic": "My house", "grammar": "Is she in…? · Where are…? — They’re…", "phonics": "Digraph sh", "vocab": ["kitchen", "living room", "dining room", "bedroom", "bathroom", "garden", "upstairs", "downstairs", "front door"]}, {"n": 9, "title": "Lunchtime!", "topic": "My lunch box", "grammar": "I’ve got… · I haven’t got…", "phonics": "Digraph ch", "vocab": ["lunch box", "sandwich", "apple", "banana", "pear", "grapes", "tomato", "drink"]}, {"n": 10, "title": "A new friend!", "topic": "My friends / Shapes", "grammar": "He’s / She’s got… · He / She hasn’t got…", "phonics": "Digraph th", "vocab": ["friend", "hair", "eyes", "blond", "brown", "black", "curly", "straight", "circle", "triangle", "rectangle", "diamond"]}, {"n": 11, "title": "I like monkeys!", "topic": "The zoo / adjectives", "grammar": "I like… · I don’t like… · I’m little / They’re big.", "phonics": "CVC words: cat, man, fan", "vocab": ["monkey", "elephant", "giraffe", "tiger", "snake", "parrot", "lion", "polar bear", "seal", "big", "little", "tall"]}, {"n": 12, "title": "Dinnertime!", "topic": "Food / Drinks", "grammar": "Do you like…? — Yes, I do. / No, I don’t.", "phonics": "CVC words: bed, pen, red", "vocab": ["rice", "meat", "carrots", "yogurt", "bread", "fish", "juice", "water", "milk", "tomatoes"]}, {"n": 13, "title": "Tidy up!", "topic": "My bedroom / Numbers 11–20", "grammar": "There’s… · There are…", "phonics": "CVC words: bin, fig, tin", "vocab": ["bed", "blanket", "pillow", "cupboard", "shelf", "rug", "bin", "books", "toys", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"]}, {"n": 14, "title": "Action Boy can run!", "topic": "Verbs", "grammar": "He can / can’t… · Can he…? — Yes, he can. / No, he can’t.", "phonics": "CVC words: dog, fox, log", "vocab": ["walk", "run", "fly", "swim", "jump", "sing", "write", "draw", "talk", "play football"]}, {"n": 15, "title": "Let’s play ball!", "topic": "The beach", "grammar": "Let’s + verb", "phonics": "CVC words: rug, jug, sum", "vocab": ["beach", "ball", "sandcastle", "ice cream", "crab", "sea", "shells", "hat", "sun cream", "frisbee"]}];
+const grammar=[[1, "What’s this? 🖊️", "It’s a pen.", "It’s a pencil.", "It’s a pen."], [1, "What’s this? 📚", "It’s a book.", "It’s a book.", "It’s a ruler."], [2, "Is this your teddy? 🧸", "Yes, it is.", "Yes, it is.", "Yes, they are."], [2, "Is this your ball? ⚽", "No, it isn’t.", "No, it isn’t.", "No, they aren’t."], [3, "Look at the face. ___ my nose.", "This is", "These are", "This is"], [3, "Look at the hands. ___ my hands.", "These are", "This is", "These are"], [4, "He works at a hospital. He is a…", "doctor", "doctor", "pupil"], [4, "___ she a nurse?", "Is", "Is", "Are"], [5, "Where’s the ball? It’s ___ the box.", "under", "under", "between"], [5, "Where’s the book? It’s ___ the table.", "on", "on", "behind"], [6, "This is Billy___ teddy.", "'s", "'s", "s'"], [7, "Are these ___ socks?", "her", "her", "his"], [8, "Where are the bedrooms? — ___ upstairs.", "They’re", "They’re", "It’s"], [9, "I ___ got a sandwich.", "I’ve", "I’ve", "I’m"], [10, "She’s ___ curly hair.", "got", "got", "gotn’t"], [11, "I ___ like elephants.", "don’t", "don’t", "doesn’t"], [12, "Do you like carrots? — Yes, I ___.", "do", "do", "am"], [13, "___ a bed in my room.", "There’s", "There’s", "There are"], [14, "Can he fly? — No, he ___.", "can’t", "can’t", "isn’t"], [15, "___ play ball!", "Let’s", "Let’s", "Let’s not"]];
+let currentUnit=1,currentMode='words',qIndex=0,score=0,currentSet=[],xp=0;
+
+function show(id){const x=document.getElementById(id);if(!x)return;document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));x.classList.add('active');window.scrollTo(0,0)}
+function openUnit(n){currentUnit=n;const u=units[n-1];document.getElementById('unitContent').innerHTML=
+'<span class="tag">UNIT '+n+'</span><div class="card hero"><h2>'+u.title+'</h2><div class="muted">'+u.topic+'</div><div class="chips">'+u.vocab.map(v=>'<span class="chip">'+v+'</span>').join('')+'</div></div>'+
+'<div class="lesson"><b>🧠 Words</b><span class="muted">'+u.topic+'. Слова Unit '+n+' + слова-дистракторы из других Units.</span></div>'+
+'<div class="lesson"><b>🔤 Grammar</b><span class="muted">'+u.grammar+'</span></div>'+
+'<div class="lesson"><b>🎧 Listening</b><span class="muted">Прослушивание фразы и выбор правильного ответа. Можно повторять аудио.</span></div>'+
+'<div class="lesson"><b>🔊 Phonics</b><span class="muted">'+u.phonics+'</span></div>'+
+"<button class=\"primary\" onclick=\"startMode(\'words\')\">🧠 Слова</button><button class=\"primary\" onclick=\"startMode(\'grammar\')\">🔤 Грамматика</button><button class=\"primary\" onclick=\"startMode(\'listen\')\">🎧 Аудирование</button><button class=\"primary\" onclick=\"startSpeaking()\">🗣 Говорение</button>";
+document.getElementById('unitContent').insertAdjacentHTML('beforeend','<div class="card" style="background:#f7f5ff;border-color:#ddd7ff"><b>🗣 Говорение и произношение</b><div class="muted" style="margin-top:6px">Повтори слова вслух, затем используй каждое слово в трёх предложениях. Приложение распознает английскую речь и даст оценку.</div><button class="primary" onclick="startSpeaking()">Начать Speaking</button></div>');show('unit')}
+function setActive(mode){document.querySelectorAll('.mode').forEach(x=>x.classList.remove('active'));document.getElementById('m'+mode[0].toUpperCase()+mode.slice(1)).classList.add('active')}
+function startMode(mode){currentMode=mode;qIndex=0;score=0;setActive(mode);show('quiz');renderQuestion()}
+function getWordQuestions(){const u=units[currentUnit-1];const all=units.flatMap(x=>x.vocab);const unique=[...new Set(all)];return Array.from({length:5},(_,i)=>{const correct=u.vocab[i%u.vocab.length];let distractors=unique.filter(w=>!u.vocab.includes(w));distractors.sort(()=>Math.random()-.5);return {correct,opts:[correct,...distractors.slice(i%8, i%8+3)]}})}
+function renderQuestion(){document.getElementById('nextBtn').style.display='none';document.getElementById('feedback').innerHTML='';document.getElementById('listenBox').style.display=currentMode==='listen'?'block':'none';
+if(currentMode==='words'){if(qIndex===0||currentSet.type!=='words'){currentSet=getWordQuestions();currentSet.type='words'}const q=currentSet[qIndex];document.getElementById('quizTag').textContent='WORDS · '+(qIndex+1)+'/5';document.getElementById('quizQuestion').innerHTML='Choose the word from <b>'+units[currentUnit-1].topic+'</b>:';renderAnswers(q.opts,q.correct)}
+else if(currentMode==='grammar'){const qs=grammar.filter(q=>q[0]===currentUnit);currentSet=qs.length?qs:[grammar[currentUnit-1]];const q=currentSet[qIndex%currentSet.length];document.getElementById('quizTag').textContent='GRAMMAR · '+(qIndex+1)+'/5';document.getElementById('quizQuestion').innerHTML=q[1];renderAnswers([q[2],q[3],q[4]].filter((x,i,a)=>a.indexOf(x)===i),q[2])}
+else{const u=units[currentUnit-1];const word=u.vocab[qIndex%u.vocab.length];const sentence='This is a '+word+'.';currentSet=[{text:sentence,word}];document.getElementById('quizTag').textContent='LISTEN · '+(qIndex+1)+'/5';document.getElementById('quizQuestion').innerHTML='Listen and choose the word you hear:';const all=units.flatMap(x=>x.vocab);let opts=[word,...all.filter(x=>x!==word).sort(()=>Math.random()-.5).slice(0,3)];renderAnswers(opts,word);}}
+function renderAnswers(opts,correct){opts=[...new Set(opts)];while(opts.length<4){opts.push(units.flatMap(x=>x.vocab)[Math.floor(Math.random()*units.flatMap(x=>x.vocab).length)])}opts.sort(()=>Math.random()-.5);document.getElementById('answers').innerHTML=opts.map((o,i)=>'<button class="answer" data-i="'+i+'" onclick="answer(this)">'+o+'</button>').join('');window.correctAnswer=correct;window.answerOptions=opts;if(currentMode==='listen')speakCurrent()}
+function answer(el){document.querySelectorAll('.answer').forEach(x=>x.disabled=true);const choice=window.answerOptions[Number(el.dataset.i)],ok=choice===window.correctAnswer;el.classList.add(ok?'correct':'wrong');if(ok){score++;xp+=20;document.getElementById('xp').textContent=xp+' XP'}document.getElementById('feedback').innerHTML=ok?'✅ Отлично! +20 XP':'❌ Правильный ответ: <b>'+window.correctAnswer+'</b>';document.getElementById('nextBtn').style.display='block'}
+function nextQuestion(){qIndex++;if(qIndex>=5){document.getElementById('quizQuestion').innerHTML='🏆 Готово!<br><small>Результат: '+score+'/5 · +'+(score*20)+' XP</small>';document.getElementById('answers').innerHTML='';document.getElementById('listenBox').style.display='none';document.getElementById('feedback').innerHTML=score>=4?'⭐ Отличная работа!':'💪 Повтори тему и попробуй ещё раз.';document.getElementById('nextBtn').textContent='Вернуться к Unit';document.getElementById('nextBtn').onclick=()=>openUnit(currentUnit)}else{document.getElementById('nextBtn').textContent='Следующее →';document.getElementById('nextBtn').onclick=nextQuestion;renderQuestion()}}
+function speakCurrent(){if(!('speechSynthesis' in window)){document.getElementById('feedback').innerHTML='⚠️ В этом браузере голосовое озвучивание недоступно.';return}let text='';if(currentMode==='listen'){text=currentSet[0]?.text||''}else if(currentMode==='words'){text=window.correctAnswer||''}else{text=document.getElementById('quizQuestion').innerText||''}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=.82;u.pitch=1.05;speechSynthesis.speak(u)}
+
+let speakingWords=[],speakingIndex=0,speakingStage='word',speakingScore=0,currentTarget='',recognition=null;
+const sentenceTemplates=[w=>'This is a '+w+'.',w=>'I can see a '+w+'.',w=>'I like my '+w+'.'];
+function startSpeaking(){if(document.getElementById('micPermission')){document.getElementById('micPermission').className='mic-permission';document.getElementById('micPermissionText').textContent='Нажми «Разрешить микрофон», затем разреши доступ.';}speakingWords=units[currentUnit-1].vocab.slice(0,5);speakingIndex=0;speakingScore=0;show('speaking');renderSpeakingItem()}
+function renderSpeakingItem(){let w=speakingWords[speakingIndex];speakingStage='word';currentTarget=w;document.getElementById('speakStage').textContent='1 · СЛОВО '+(speakingIndex+1)+'/5';document.getElementById('speakWord').textContent=w;document.getElementById('speakStatus').textContent='Нажми на микрофон и произнеси слово.';document.getElementById('speakResult').style.display='none';document.getElementById('sentenceArea').style.display='none';document.getElementById('speakNext').style.display='none'}
+function normalizeSpeech(s){return(s||'').toLowerCase().replace(/[.,!?;:'"“”‘’]/g,'').replace(/\s+/g,' ').trim()}
+function similarity(a,b){a=normalizeSpeech(a);b=normalizeSpeech(b);if(!a||!b)return 0;if(a===b)return 100;let A=a.split(' '),B=b.split(' '),d=Array.from({length:A.length+1},()=>Array(B.length+1).fill(0));for(let i=1;i<=A.length;i++)for(let j=1;j<=B.length;j++)d[i][j]=A[i-1]===B[j-1]?d[i-1][j-1]+1:Math.max(d[i-1][j],d[i][j-1]);return Math.round(100*d[A.length][B.length]/Math.max(A.length,B.length))}
+
+let micStream=null;
+
+async function requestMicPermission(){
+  const box=document.getElementById('micPermission');
+  const text=document.getElementById('micPermissionText');
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    box.className='mic-permission mic-error';
+    text.innerHTML='Этот способ открытия файла не даёт приложению доступ к микрофону.<br><b>Открой Greetingschool как сайт через HTTPS.</b>';
+    return false;
+  }
+  try{
+    micStream=await navigator.mediaDevices.getUserMedia({audio:true});
+    box.className='mic-permission mic-ok';
+    text.textContent='✅ Микрофон разрешён. Теперь нажми большую кнопку 🎙️.';
+    if(micStream.getTracks) micStream.getTracks().forEach(t=>t.stop());
+    return true;
+  }catch(e){
+    box.className='mic-permission mic-error';
+    if(e && e.name==='NotAllowedError'){
+      text.innerHTML='❌ Доступ запрещён. В настройках Safari разреши микрофон для этого сайта, затем вернись в приложение.';
+    }else if(e && e.name==='SecurityError'){
+      text.innerHTML='❌ Браузер заблокировал микрофон, потому что файл открыт не из защищённого HTTPS-сайта.<br><b>Для рабочей версии нужно открыть приложение по HTTPS.</b>';
+    }else{
+      text.innerHTML='❌ Не удалось получить доступ к микрофону. Проверь разрешения устройства и попробуй ещё раз.';
+    }
+    return false;
+  }
+}
+
+async function ensureMicBeforeRecognition(){
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    document.getElementById('speakStatus').textContent='⚠️ Микрофон недоступен в режиме просмотра файла. Нужна HTTPS-версия приложения.';
+    return false;
+  }
+  try{
+    const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+    stream.getTracks().forEach(t=>t.stop());
+    return true;
+  }catch(e){
+    await requestMicPermission();
+    return false;
+  }
+}
+
+async function startRecognition(){if(!(await ensureMicBeforeRecognition()))return;let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){document.getElementById('speakStatus').textContent='⚠️ Этот браузер не поддерживает распознавание речи. Попробуй Safari/Chrome с доступом к микрофону.';return}recognition=new SR();recognition.lang='en-US';recognition.interimResults=false;recognition.maxAlternatives=1;recognition.onstart=()=>{document.getElementById('micButton').classList.add('listening');document.getElementById('speakStatus').textContent='🎙️ Слушаю…'};recognition.onend=()=>document.getElementById('micButton').classList.remove('listening');recognition.onerror=()=>document.getElementById('speakStatus').textContent='⚠️ Не удалось распознать. Разреши микрофон и попробуй ещё раз.';recognition.onresult=e=>evaluateSpeech(e.results[0][0].transcript);try{recognition.start()}catch(e){}}
+function evaluateSpeech(spoken){let score=similarity(spoken,currentTarget),good=score>=80,r=document.getElementById('speakResult');r.style.display='block';r.innerHTML='<b>Ты сказал:</b> '+spoken+'<div class="speak-score">'+score+'%</div><div style="text-align:center">'+(good?'✅ Отлично!':'🔁 Попробуй ещё раз')+'</div>';if(good){if(speakingStage==='word'){speakingScore++;showSentences()}else document.getElementById('speakNext').style.display='block'}else document.getElementById('speakStatus').textContent='Произнеси ещё раз, стараясь говорить чётко.'}
+function showSentences(){speakingStage='sentences';let w=speakingWords[speakingIndex],ss=sentenceTemplates.map(f=>f(w));document.getElementById('speakStage').textContent='2 · ПРЕДЛОЖЕНИЯ';document.getElementById('sentenceArea').style.display='block';document.getElementById('sentenceList').innerHTML=ss.map((s,i)=>'<div class="sentence-item"><b>'+(i+1)+'. '+s+'</b><button class="secondary" onclick="speakSentence('+i+')">🔊 Образец</button><button class="secondary" style="margin-left:6px" onclick="setSentence('+i+')">🎙️ Повторить</button></div>').join('');document.getElementById('speakStatus').textContent='Послушай образец и повтори предложение.'}
+function setSentence(i){currentTarget=sentenceTemplates[i](speakingWords[speakingIndex]);document.getElementById('speakStatus').textContent='Нажми 🎙️ и произнеси предложение.'}
+function speakSentence(i){setSentence(i);speakText(currentTarget)}
+function speakTarget(){speakText(currentTarget)}
+function speakText(t){if(!('speechSynthesis'in window))return;speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.78;speechSynthesis.speak(u)}
+function nextSpeakingItem(){speakingIndex++;if(speakingIndex>=speakingWords.length){document.getElementById('speakStage').textContent='🏆 ГОТОВО';document.getElementById('speakWord').textContent='Отличная работа!';document.getElementById('sentenceArea').style.display='none';document.getElementById('speakResult').style.display='block';document.getElementById('speakResult').innerHTML='<div class="speak-score">🗣 '+speakingScore+' / 5 слов</div><div style="text-align:center">Произношение потренировано.</div>';document.getElementById('speakNext').textContent='Вернуться к Unit';document.getElementById('speakNext').onclick=()=>openUnit(currentUnit)}else renderSpeakingItem()}
+</script></body></html>
