@@ -233,20 +233,61 @@ function openUnit(n){currentUnit=n;const u=units[n-1];document.getElementById('u
 "<button class=\"primary\" onclick=\"startMode(\'words\')\">🧠 Слова</button><button class=\"primary\" onclick=\"startMode(\'grammar\')\">🔤 Грамматика</button><button class=\"primary\" onclick=\"startMode(\'listen\')\">🎧 Аудирование</button><button class=\"primary\" onclick=\"startSpeaking()\">🗣 Говорение</button>";
 document.getElementById('unitContent').insertAdjacentHTML('beforeend','<div class="card" style="background:#f7f5ff;border-color:#ddd7ff"><b>🗣 Говорение и произношение</b><div class="muted" style="margin-top:6px">Повтори слова вслух, затем используй каждое слово в трёх предложениях. Приложение распознает английскую речь и даст оценку.</div><button class="primary" onclick="startSpeaking()">Начать Speaking</button></div>');show('unit')}
 function setActive(mode){document.querySelectorAll('.mode').forEach(x=>x.classList.remove('active'));document.getElementById('m'+mode[0].toUpperCase()+mode.slice(1)).classList.add('active')}
-function startMode(mode){currentMode=mode;qIndex=0;score=0;setActive(mode);show('quiz');renderQuestion()}
-function getWordQuestions(){const u=units[currentUnit-1];const all=units.flatMap(x=>x.vocab);const unique=[...new Set(all)];return Array.from({length:5},(_,i)=>{const correct=u.vocab[i%u.vocab.length];let distractors=unique.filter(w=>!u.vocab.includes(w));distractors.sort(()=>Math.random()-.5);return {correct,opts:[correct,...distractors.slice(i%8, i%8+3)]}})}
+function startMode(mode){currentMode=mode;qIndex=0;score=0;currentSet=[];setActive(mode);show('quiz');renderQuestion()}
+function getWordQuestions(){
+const u=units[currentUnit-1];
+const words=[...new Set(u.vocab)];
+const selected=[...words].sort(()=>Math.random()-.5).slice(0,5);
+while(selected.length<5&&words.length)selected.push(words[selected.length%words.length]);
+const all=[...new Set(units.flatMap(x=>x.vocab))];
+return Array.from({length:5},(_,i)=>{
+ const correct=selected[i];
+ const same=words.filter(w=>w!==correct).sort(()=>Math.random()-.5);
+ const other=all.filter(w=>w!==correct&&!words.includes(w)).sort(()=>Math.random()-.5);
+ return {correct,opts:[...new Set([correct,...same,...other])].slice(0,4)};
+});
+}
 function renderQuestion(){document.getElementById('nextBtn').style.display='none';document.getElementById('feedback').innerHTML='';document.getElementById('listenBox').style.display=currentMode==='listen'?'block':'none';
-if(currentMode==='words'){if(qIndex===0||currentSet.type!=='words'){currentSet=getWordQuestions();currentSet.type='words'}const q=currentSet[qIndex];document.getElementById('quizTag').textContent='WORDS · '+(qIndex+1)+'/5';document.getElementById('quizQuestion').innerHTML='Choose the word from <b>'+units[currentUnit-1].topic+'</b>:';renderAnswers(q.opts,q.correct)}
-else if(currentMode==='grammar'){const qs=grammar.filter(q=>q[0]===currentUnit);currentSet=qs.length?qs:[grammar[currentUnit-1]];const q=currentSet[qIndex%currentSet.length];document.getElementById('quizTag').textContent='GRAMMAR · '+(qIndex+1)+'/5';const imageMap={
-pen:'<svg viewBox="0 0 320 190" class="objectSvg"><rect width="320" height="190" rx="18" fill="#f5f7fb"/><g transform="rotate(-18 160 95)"><rect x="72" y="82" width="165" height="26" rx="8" fill="#2f5bea"/><rect x="215" y="82" width="42" height="26" rx="4" fill="#c7ccd8"/><polygon points="72,82 40,95 72,108" fill="#e0a66d"/><polygon points="40,95 53,91 53,99" fill="#333"/><rect x="86" y="82" width="8" height="26" fill="#f2c94c"/></g></svg>',
-pencil:'<svg viewBox="0 0 320 190" class="objectSvg"><rect width="320" height="190" rx="18" fill="#f5f7fb"/><g transform="rotate(-18 160 95)"><rect x="72" y="82" width="165" height="28" rx="5" fill="#f2c94c"/><rect x="215" y="82" width="32" height="28" fill="#e98b8b"/><polygon points="72,82 38,96 72,110" fill="#e6b47a"/><polygon points="38,96 52,92 52,100" fill="#333"/><rect x="88" y="82" width="7" height="28" fill="#d99b2b"/></g></svg>',
-rubber:'<svg viewBox="0 0 320 190" class="objectSvg"><rect width="320" height="190" rx="18" fill="#f5f7fb"/><g transform="rotate(-8 160 95)"><rect x="88" y="62" width="145" height="66" rx="16" fill="#f08ca2"/><rect x="104" y="68" width="35" height="54" rx="8" fill="#f7b6c5"/><rect x="139" y="68" width="78" height="54" rx="8" fill="#f3f3f3"/></g></svg>',
-ruler:'<svg viewBox="0 0 320 190" class="objectSvg"><rect width="320" height="190" rx="18" fill="#f5f7fb"/><g transform="rotate(-12 160 95)"><rect x="52" y="78" width="220" height="40" rx="6" fill="#ffd86a"/><path d="M70 78v18 M88 78v12 M106 78v18 M124 78v12 M142 78v18 M160 78v12 M178 78v18 M196 78v12 M214 78v18 M232 78v12 M250 78v18" stroke="#555" stroke-width="3"/><text x="78" y="109" font-size="13" fill="#555">1 2 3 4 5 6 7 8 9</text></g></svg>',
-book:'<svg viewBox="0 0 320 190" class="objectSvg"><rect width="320" height="190" rx="18" fill="#f5f7fb"/><g transform="rotate(-5 160 95)"><path d="M68 48 Q115 42 156 62 L156 145 Q112 125 68 132 Z" fill="#4f7cf3"/><path d="M156 62 Q205 42 252 48 L252 132 Q205 125 156 145 Z" fill="#7f9df7"/><path d="M156 62 L156 145" stroke="#fff" stroke-width="5"/><path d="M88 72 Q120 68 142 78 M88 88 Q120 84 142 94 M172 78 Q204 68 232 72 M172 94 Q204 84 232 88" stroke="#fff" stroke-width="4" fill="none"/></g></svg>'
+if(currentMode==='words'){if(qIndex===0||currentSet.type!=='words'){currentSet=getWordQuestions();currentSet.type='words'}const q=currentSet[qIndex];document.getElementById('quizTag').textContent='WORDS · '+(qIndex+1)+'/5';document.getElementById('quizQuestion').innerHTML='Выбери слово из темы: <b>'+units[currentUnit-1].topic+'</b>';renderAnswers(q.opts,q.correct)}
+else if(currentMode==='grammar'){
+const u=units[currentUnit-1];
+function makeGrammar(unit){
+ const v=unit.vocab,q=[];
+ const add=(p,c,w1,w2,img)=>q.push([unit.n,p,c,w1,w2,img]);
+ switch(unit.n){
+ case 1:v.slice(0,5).forEach(w=>add("What’s this?","It’s a "+w+".","It’s a "+(v.find(x=>x!==w)||"book")+".","These are "+w+".",w));break;
+ case 2:v.slice(0,5).forEach((w,i)=>add("Is this your "+w+"?",i%2?"No, it isn’t.":"Yes, it is.",i%2?"Yes, it is.":"No, it isn’t.","Yes, they are.",w));break;
+ case 3:["nose","face","arm","hands","eyes"].forEach(w=>{let pl=["arms","legs","ears","eyes","hands","fingers"].includes(w);add("Look at the "+w+". ___ my "+w+".",pl?"These are":"This is",pl?"This is":"These are","window",w)});break;
+ case 4:v.slice(0,5).forEach((w,i)=>add(i%2?"She’s a…":"He’s a…",w,i%2?"doctor":"nurse","pupil",w));break;
+ case 5:["ball","book","kite","frisbee","ice cream"].forEach((w,i)=>add("Where’s the "+w+"? It’s ___ the box.",["under","on","in"][i%3],"behind","between",w));break;
+ case 6:["mum","dad","sister","brother","grandma"].forEach(w=>add("This is "+w+"___ teddy.","'s","s'","is",w));break;
+ case 7:["socks","shoes","trousers","shorts","T-shirt"].forEach((w,i)=>add("Are these ___ "+w+"?",i%2?"his":"her",i%2?"her":"his","their",w));break;
+ case 8:["bedroom","bathroom","kitchen","garden","living room"].forEach(w=>add("Is she in the "+w+"?","Yes, she is.","No, she isn’t.","They’re upstairs.",w));break;
+ case 9:["sandwich","apple","banana","pear","drink"].forEach((w,i)=>add("I ___ got a "+w+".",i%2?"haven’t":"I’ve","I’m","has",w));break;
+ case 10:["hair","eyes","curly hair","straight hair","brown hair"].forEach(w=>add("She’s ___ "+w+".","got","gotn’t","have",w.split(" ")[0]));break;
+ case 11:["monkeys","elephants","lions","giraffes","tigers"].forEach(w=>add("I ___ like "+w+".","don’t","doesn’t","am",w));break;
+ case 12:["carrots","apples","bananas","pears","grapes"].forEach(w=>add("Do you like "+w+"? — Yes, I ___.","do","am","does",w));break;
+ case 13:["bed","chair","table","bookcase","window"].forEach((w,i)=>add(i?"___ two "+w+"s in my room.":"___ a "+w+" in my room.",i?"There are":"There’s","They’re","It’s",w));break;
+ case 14:["fly","run","swim","jump","sing"].forEach(w=>add("Can he "+w+"? — No, he ___.","can’t","isn’t","doesn’t",w));break;
+ case 15:["play ball","ride a bike","go to the park","play a game","sing a song"].forEach(w=>add("___ "+w+"!","Let’s","Let’s not","Is",w.split(" ")[0]));break;
+ default:grammar.filter(x=>x[0]===unit.n).forEach(x=>q.push(x));
+ }
+ while(q.length<5&&q.length)q.push([...q[q.length%q.length]]);
+ return q.slice(0,5);
+}
+const qs=makeGrammar(u),q=qs[qIndex%5];
+document.getElementById('quizTag').textContent='GRAMMAR · '+(qIndex+1)+'/5';
+const imageMap={
+pen:'<svg viewBox="0 0 320 190" class="objectSvg"><rect width="320" height="190" rx="18" fill="#f5f7fb"/><rect x="72" y="82" width="165" height="26" rx="8" fill="#2f5bea"/></svg>',
+pencil:'<svg viewBox="0 0 320 190" class="objectSvg"><rect width="320" height="190" rx="18" fill="#f5f7fb"/><rect x="72" y="82" width="165" height="28" rx="5" fill="#f2c94c"/></svg>',
+rubber:'<svg viewBox="0 0 320 190" class="objectSvg"><rect width="320" height="190" rx="18" fill="#f5f7fb"/><rect x="88" y="62" width="145" height="66" rx="16" fill="#f08ca2"/></svg>',
+ruler:'<svg viewBox="0 0 320 190" class="objectSvg"><rect width="320" height="190" rx="18" fill="#f5f7fb"/><rect x="52" y="78" width="220" height="40" rx="6" fill="#ffd86a"/></svg>',
+book:'<svg viewBox="0 0 320 190" class="objectSvg"><rect width="320" height="190" rx="18" fill="#f5f7fb"/><path d="M68 48 Q115 42 156 62 L156 145 Q112 125 68 132 Z" fill="#4f7cf3"/><path d="M156 62 Q205 42 252 48 L252 132 Q205 125 156 145 Z" fill="#7f9df7"/></svg>'
 };
-const visual = imageMap[q[5]] || '<div style="width:320px;height:190px;border-radius:18px;background:#f5f7fb;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:#6c5ce7">Picture</div>';
-document.getElementById('quizQuestion').innerHTML='<div class="grammarImage" role="img" aria-label="'+q[5]+'" style="display:flex;align-items:center;justify-content:center;margin-bottom:12px">'+visual+'</div><div>'+q[1]+'</div>';
-renderAnswers([q[2],q[3],q[4]].filter((x,i,a)=>a.indexOf(x)===i),q[2])}
+const visual=imageMap[q[5]]||'<div style="width:320px;height:190px;border-radius:18px;background:#f5f7fb;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:#6c5ce7">Picture</div>';
+document.getElementById('quizQuestion').innerHTML='<div class="grammarImage" style="display:flex;align-items:center;justify-content:center;margin-bottom:12px">'+visual+'</div><div>'+q[1]+'</div>';
+renderAnswers([q[2],q[3],q[4]],q[2])
+}
 else{const u=units[currentUnit-1];const word=u.vocab[qIndex%u.vocab.length];const sentence='This is a '+word+'.';currentSet=[{text:sentence,word}];document.getElementById('quizTag').textContent='LISTEN · '+(qIndex+1)+'/5';document.getElementById('quizQuestion').innerHTML='Listen and choose the word you hear:';const all=units.flatMap(x=>x.vocab);let opts=[word,...all.filter(x=>x!==word).sort(()=>Math.random()-.5).slice(0,3)];renderAnswers(opts,word);}}
 function renderAnswers(opts,correct){opts=[...new Set(opts)];while(opts.length<4){opts.push(units.flatMap(x=>x.vocab)[Math.floor(Math.random()*units.flatMap(x=>x.vocab).length)])}opts.sort(()=>Math.random()-.5);document.getElementById('answers').innerHTML=opts.map((o,i)=>'<button class="answer" data-i="'+i+'" onclick="answer(this)">'+o+'</button>').join('');window.correctAnswer=correct;window.answerOptions=opts;if(currentMode==='listen')speakCurrent()}
 function answer(el){document.querySelectorAll('.answer').forEach(x=>x.disabled=true);const choice=window.answerOptions[Number(el.dataset.i)],ok=choice===window.correctAnswer;el.classList.add(ok?'correct':'wrong');if(ok){score++;xp+=20;document.getElementById('xp').textContent=xp+' XP'}document.getElementById('feedback').innerHTML=ok?'✅ Отлично! +20 XP':'❌ Правильный ответ: <b>'+window.correctAnswer+'</b>';document.getElementById('nextBtn').style.display='block'}
