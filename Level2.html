@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#6C5CE7">
+<title>Greetingschool — Level 2</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:#f4f5fb;color:#202238}
+button{font:inherit;border:0;cursor:pointer}.app{max-width:560px;margin:auto;min-height:100vh;background:#fff}
+header{padding:20px;background:linear-gradient(135deg,#6c5ce7,#8f7cf5);color:#fff;border-radius:0 0 28px 28px}
+.top{display:flex;justify-content:space-between;align-items:center}.logo{font-size:21px;font-weight:800}.avatar{background:#ffffff33;padding:9px 12px;border-radius:16px}
+h1{font-size:25px;margin:18px 0 5px}.sub{opacity:.92;line-height:1.4}.bar{height:9px;background:#ffffff33;border-radius:10px;overflow:hidden;margin-top:16px}.bar i{display:block;height:100%;background:#fff;width:7%}
+main{padding:18px 18px 100px}.screen{display:none}.screen.active{display:block}.muted{color:#85899e;font-size:13px;line-height:1.45}
+.card{padding:17px;border:1px solid #ececf4;border-radius:21px;margin-bottom:12px;box-shadow:0 4px 16px #2221}.hero{background:#faf9ff;border-color:#e4e0ff}
+.primary{background:#6c5ce7;color:#fff;border-radius:14px;padding:13px 16px;font-weight:800;width:100%;margin-top:12px}.secondary{background:#f0efff;color:#5b4bd8;border-radius:13px;padding:10px 13px;font-weight:800}
+.sectionTitle{font-size:18px;font-weight:800;margin:20px 0 11px}.unit{padding:15px;border:1px solid #ececf4;border-radius:20px;margin-bottom:10px;cursor:pointer}.unitHead{display:flex;align-items:center;gap:12px}.unitNum{width:40px;height:40px;border-radius:13px;background:#eeeaff;color:#5b4bd8;display:grid;place-items:center;font-weight:900}.unitTitle{font-size:16px;font-weight:900}.arrow{margin-left:auto;font-size:28px;color:#aaa}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.chip{background:#f0efff;color:#5b4bd8;padding:6px 8px;border-radius:9px;font-size:11px;font-weight:800}
+.lesson{padding:14px;border:1px solid #ececf4;border-radius:16px;margin:10px 0;background:#fff}.tag{display:inline-block;background:#eaf8f1;color:#3a8563;padding:7px 11px;border-radius:12px;font-size:12px;font-weight:900}
+.back{background:#f1f1f7;border-radius:14px;padding:12px 16px;font-weight:800;margin-bottom:14px}.question{font-size:23px;font-weight:800;line-height:1.35;margin:18px 0}.answers{display:grid;gap:10px}.answer{background:#f7f7fb;text-align:left;border:2px solid transparent;border-radius:16px;padding:15px;color:#3783e8;font-weight:800}.answer.correct{background:#ecfbf4;border-color:#35b779;color:#187451}.answer.wrong{background:#fff0f1;border-color:#ef6b73;color:#a93d48}.feedback{margin-top:14px;padding:13px;border-radius:14px;background:#f8f7ff}
+.modebar{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.mode{background:#f2f1f8;color:#5d6076;border-radius:14px;padding:12px 6px;font-weight:800}.mode.active{background:#6c5ce7;color:#fff}
+.listenbox{padding:18px;border-radius:20px;background:#f8f7ff;text-align:center;margin:14px 0}.speaker{width:72px;height:72px;border-radius:50%;background:#6c5ce7;color:#fff;font-size:30px;margin:8px auto}
+.speaking-card{padding:18px;border:1px solid #e8e6f4;border-radius:21px;background:#faf9ff}.speak-word{font-size:30px;font-weight:900;text-align:center;margin:15px 0}.mic-btn{display:block;width:82px;height:82px;border-radius:50%;background:#6c5ce7;color:#fff;font-size:34px;margin:14px auto}.speak-status{text-align:center;color:#777b90;min-height:22px}
+.sentence-list{display:grid;gap:9px;margin-top:12px}.sentence-item{padding:12px;border:1px solid #e8e6f4;border-radius:14px;background:#fff}.sentence-item b{display:block;margin-bottom:7px}
+.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(560px,100%);background:#fff;border-top:1px solid #eeeef5;display:grid;grid-template-columns:repeat(3,1fr);padding:8px;z-index:10}.nav{background:none;color:#9295a8;padding:8px;font-weight:800}.nav.active{color:#6c5ce7}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+<div class="top"><div class="logo">🎓 Greetingschool</div><div class="avatar">👦</div></div>
+<h1>Level 2 · Family and Friends 2</h1>
+<div class="sub">Class Book + Workbook · Words + Grammar + Listening + Speaking</div>
+<div class="bar"><i></i></div><div style="font-size:12px;margin-top:7px">15 Units · адаптивные задания</div>
+</header>
+<main>
+<section id="home" class="screen active">
+<div class="card hero"><b>🎯 Сегодняшняя миссия</b><h2 id="missionTitle">Unit 1 · Our new things</h2><div class="muted">Words · Grammar · Listening</div><button class="primary" onclick="openUnit(1)">Начать</button></div>
+<div class="sectionTitle">Units 1–15</div>
+<div id="unitList"></div>
+</section>
+
+<section id="unit" class="screen"><button class="back" onclick="show('home')">← Назад</button><div id="unitContent"></div></section>
+
+<section id="quiz" class="screen">
+<button class="back" onclick="show('unit')">← Назад</button>
+<div class="modebar">
+<button id="mWords" class="mode active" onclick="startMode('words')">🧠 Words</button>
+<button id="mGrammar" class="mode" onclick="startMode('grammar')">🔤 Grammar</button>
+<button id="mListen" class="mode" onclick="startMode('listen')">🎧 Listen</button>
+</div>
+<span class="tag" id="quizTag">WORDS · 1/5</span>
+<div id="listenBox" class="listenbox" style="display:none"><div style="font-size:48px">🔊</div><b>Нажми, чтобы прослушать</b><div class="muted">Фраза меняется в каждом вопросе.</div><button class="speaker" onclick="speakCurrent()">▶</button></div>
+<div id="quizQuestion" class="question"></div>
+<div id="answers" class="answers"></div>
+<div id="feedback" class="feedback"></div>
+<button id="nextBtn" class="primary" style="display:none" onclick="nextQuestion()">Следующее →</button>
+</section>
+
+<section id="speaking" class="screen">
+<button class="back" onclick="show('unit')">← Назад</button>
+<span class="tag" id="speakStage">1 · СЛОВО 1/5</span>
+<div class="speaking-card">
+<div class="muted" style="text-align:center">Сначала повтори слово. Затем используй его в предложениях.</div>
+<div id="speakWord" class="speak-word"></div>
+<button id="micButton" class="mic-btn" onclick="startRecognition()">🎙️</button>
+<div id="speakStatus" class="speak-status">Нажми на микрофон и произнеси слово.</div>
+<div id="speakResult" class="feedback" style="display:none"></div>
+<button class="secondary" style="display:block;margin:12px auto" onclick="speakTarget()">🔊 Послушать образец</button>
+</div>
+<div id="sentenceArea" style="display:none"><div class="sectionTitle">Теперь скажи слово в предложениях</div><div id="sentenceList" class="sentence-list"></div></div>
+<button id="speakNext" class="primary" style="display:none" onclick="nextSpeakingItem()">Следующее слово →</button>
+</section>
+
+<section id="progress" class="screen">
+<div class="sectionTitle">Мой прогресс</div>
+<div class="card"><h2>Level 2</h2><div class="muted">Family and Friends 2</div><div class="bar" style="background:#eee;margin-top:12px"><i style="background:#6c5ce7;width:7%"></i></div><p><b id="progressText">0%</b> курса</p></div>
+</section>
+</main>
+<nav class="bottom">
+<button class="nav active" onclick="show('home')">🏠<br>Курс</button>
+<button class="nav" onclick="startMode('words')">⚡<br>Тренировка</button>
+<button class="nav" onclick="show('progress')">📈<br>Прогресс</button>
+</nav>
+</div>
+
+<script>
+const units = [{"n": 1, "title": "Our new things", "topic": "School things", "grammar": "This is / That is / These are / Those are", "phonics": "Initial sounds", "vocab": ["classroom", "table", "computer", "peg", "pencil case", "board", "poster", "picture", "drawers", "cupboard", "CD player"]}, {"n": 2, "title": "They're happy now!", "topic": "Feelings", "grammar": "We're / They're / Are they ...? Yes, they are. / No, they aren't.", "phonics": "ch, sh, th", "vocab": ["hot", "cold", "hungry", "thirsty", "happy", "sad", "tired", "angry", "scared", "brave", "nervous"]}, {"n": 3, "title": "I can ride a bike!", "topic": "Outdoor activities / prepositions", "grammar": "can / can't; Can he/she ...?", "phonics": "CVC words a, e, i, o, u", "vocab": ["ride a bike", "ride a horse", "skate", "skateboard", "play tennis", "play football", "behind", "in front of", "next to", "between"]}, {"n": 4, "title": "Have you got a milkshake?", "topic": "Food / numbers", "grammar": "Have you got ...? / Has he/she got ...?", "phonics": "gr, br, fr", "vocab": ["salad", "fries", "pizza", "milkshake", "cheese sandwich", "chicken", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety", "one hundred"]}, {"n": 5, "title": "We've got English!", "topic": "School subjects / rooms", "grammar": "What / When have we got ...?; our / their", "phonics": "dr, tr, cr", "vocab": ["art", "maths", "English", "science", "PE", "music", "playground", "sports field", "art room", "computer room", "gym"]}, {"n": 6, "title": "Let's play after school!", "topic": "After-school activities", "grammar": "I ... / I don't ...", "phonics": "fl, pl, bl", "vocab": ["help my mum", "do my homework", "visit my grandma", "go swimming", "have a music lesson", "watch TV", "listen to music", "play with friends", "read a book", "write an email"]}, {"n": 7, "title": "Let's buy presents!", "topic": "Special days / presents", "grammar": "What do you like? I like ...; He/She likes ...; don't/doesn't like", "phonics": "cl, gl, sl", "vocab": ["chocolate", "sweets", "balloon", "present", "cake", "card", "neighbour", "pastries", "nuts", "tie", "buy"]}, {"n": 8, "title": "What's the time?", "topic": "Everyday activities / times of day", "grammar": "What's the time? It's ... o'clock. He/She ... at ... o'clock.", "phonics": "sm, sn, st, sk", "vocab": ["get up", "have breakfast", "go to school", "go home", "have dinner", "go to bed", "in the morning", "in the afternoon", "in the evening", "at night"]}, {"n": 9, "title": "Where does she work?", "topic": "Places / jobs", "grammar": "Where does he/she work? He/She works in/at ...; Does he/she work ...?", "phonics": "a_e, e_e", "vocab": ["hospital", "school", "airport", "police station", "fire station", "shop", "station", "zoo", "supermarket", "bank", "garage"]}, {"n": 10, "title": "It's hot today!", "topic": "Weather / activities", "grammar": "What's the weather like? It's ...; Put on / Don't put on; Open / Don't open", "phonics": "i_e and long-vowel patterns", "vocab": ["raining", "windy", "hot", "cold", "snowing", "sunny", "fly a kite", "make a snowman", "wear coats", "go outside", "go ice skating"]}, {"n": 11, "title": "What are you wearing?", "topic": "Clothes / time", "grammar": "What's he/she wearing? He/She is wearing ...; What are you wearing? I'm wearing ...", "phonics": "Long vowels + magic e", "vocab": ["skirt", "scarf", "gloves", "jeans", "boots", "shirt", "o'clock", "quarter past", "half past", "quarter to"]}, {"n": 12, "title": "You're sleeping!", "topic": "Celebrations / getting ready", "grammar": "Present continuous: am/is/are + verb-ing; What's he/she doing?", "phonics": "u_e", "vocab": ["wedding", "guests", "cake", "bride", "band", "invitation", "make a cake", "wash the car", "brush my hair", "take photos", "choose a dress"]}, {"n": 13, "title": "Look at all the animals!", "topic": "Farm animals / adjectives", "grammar": "Comparatives: bigger than, smaller than, taller than, shorter than", "phonics": "ee", "vocab": ["cow", "goat", "horse", "sheep", "donkey", "goose", "loud", "quiet", "fast", "slow"]}, {"n": 14, "title": "Look at the photos!", "topic": "Memories / tidying up", "grammar": "was / wasn't; were / weren't", "phonics": "Short & long vowel patterns", "vocab": ["kind", "naughty", "wet", "dry", "fridge", "photo"]}, {"n": 15, "title": "Well done!", "topic": "People / ordinal numbers", "grammar": "Ordinal numbers", "phonics": "ng / nk", "vocab": ["people", "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"]}];
+const grammarBank = {"1": [["Выбери правильный вариант: ___ is my computer.", "This", ["This", "These", "Those"]], ["Выбери правильный вариант: ___ are my pencils.", "These", ["These", "This", "That"]], ["Выбери правильный вариант: ___ is that poster.", "That", ["That", "Those", "These"]], ["Выбери правильный вариант: ___ are those books.", "Those", ["Those", "That", "This"]], ["Выбери правильный вариант: ___ is a table.", "This", ["This", "These", "Those"]]], "2": [["Are they happy? — Yes, ___.", "they are", ["they are", "they aren't", "he is"]], ["Are they tired? — No, ___.", "they aren't", ["they aren't", "they are", "he isn't"]], ["___ happy now.", "They're", ["They're", "We're", "It's"]], ["___ hungry.", "We're", ["We're", "They're", "He's"]], ["Are they scared? — Yes, ___.", "they are", ["they are", "they aren't", "it is"]]], "3": [["I ___ ride a bike.", "can", ["can", "can't", "am"]], ["She ___ skateboard.", "can", ["can", "can't", "is"]], ["He ___ ride a horse.", "can't", ["can't", "can", "is"]], ["Can she play tennis? — Yes, she ___.", "can", ["can", "can't", "is"]], ["Can he skate? — No, he ___.", "can't", ["can't", "can", "is"]]], "4": [["___ you got a pizza?", "Have", ["Have", "Has", "Are"]], ["Yes, I ___.", "have", ["have", "has", "am"]], ["___ she got a milkshake?", "Has", ["Has", "Have", "Is"]], ["No, he ___.", "hasn't", ["hasn't", "haven't", "isn't"]], ["Have they got fries? — Yes, they ___.", "have", ["have", "has", "are"]]], "5": [["When ___ we got English?", "have", ["have", "has", "are"]], ["What ___ we got on Monday?", "have", ["have", "has", "is"]], ["This is ___ classroom.", "our", ["our", "their", "they"]], ["Those are ___ computers.", "their", ["their", "our", "they"]], ["When ___ we got music?", "have", ["have", "has", "is"]]], "6": [["I ___ my homework after school.", "do", ["do", "does", "am"]], ["I ___ swimming after school.", "go", ["go", "do", "am"]], ["I ___ my grandma.", "visit", ["visit", "visits", "am"]], ["I ___ TV.", "watch", ["watch", "watches", "am"]], ["I ___ an email.", "write", ["write", "writes", "am"]]], "7": [["I ___ chocolate.", "like", ["like", "likes", "doesn't like"]], ["She ___ sweets.", "likes", ["likes", "like", "don't like"]], ["He ___ nuts.", "doesn't like", ["doesn't like", "don't like", "likes"]], ["They ___ balloons.", "like", ["like", "likes", "doesn't like"]], ["What do you like? — I ___ cake.", "like", ["like", "likes", "don't like"]]], "8": [["What’s the time? — It’s ___ o'clock.", "three", ["three", "third", "thirteen"]], ["I get up ___ the morning.", "in", ["in", "on", "at"]], ["I go to bed ___ night.", "at", ["at", "in", "on"]], ["She has dinner ___ the evening.", "in", ["in", "at", "on"]], ["He goes to school ___ the morning.", "in", ["in", "at", "on"]]], "9": [["Where does she work? — She ___ at a school.", "works", ["works", "work", "working"]], ["Does he work at a hospital? — Yes, he ___.", "does", ["does", "doesn't", "is"]], ["Does she work at a bank? — No, she ___.", "doesn't", ["doesn't", "does", "isn't"]], ["Where does he work? — He works ___ a garage.", "at", ["at", "in", "on"]], ["Where does she work? — She works ___ a hospital.", "in", ["in", "at", "on"]]], "10": [["What’s the weather like? — It’s ___.", "sunny", ["sunny", "sun", "sunshine"]], ["___ on your coat.", "Put", ["Put", "Puts", "Putting"]], ["___ put on your coat.", "Don't", ["Don't", "Doesn't", "Isn't"]], ["It’s raining. ___ outside.", "Don't go", ["Don't go", "Goes", "Going"]], ["It’s cold. ___ your coat.", "Put on", ["Put on", "Don't put", "Putting on"]]], "11": [["What is she wearing? — She is ___ a skirt.", "wearing", ["wearing", "wear", "wears"]], ["What are you wearing? — I’m ___ jeans.", "wearing", ["wearing", "wear", "wears"]], ["He is wearing ___ shirt.", "a", ["a", "an", "are"]], ["She is wearing ___ scarf.", "a", ["a", "an", "are"]], ["They are ___ boots.", "wearing", ["wearing", "wear", "wears"]]], "12": [["She is ___ a cake.", "making", ["making", "make", "makes"]], ["They are ___ photos.", "taking", ["taking", "take", "takes"]], ["What is he doing? — He is ___ the car.", "washing", ["washing", "wash", "washes"]], ["I am ___ my hair.", "brushing", ["brushing", "brush", "brushes"]], ["What are they doing? — They are ___ a dress.", "choosing", ["choosing", "choose", "chooses"]]], "13": [["A horse is ___ than a goat.", "bigger", ["bigger", "big", "biggest"]], ["A goat is ___ than a horse.", "smaller", ["smaller", "small", "smallest"]], ["A horse is ___ than a goat.", "taller", ["taller", "tall", "tallest"]], ["A goat is ___ than a horse.", "shorter", ["shorter", "short", "shortest"]], ["Which is bigger?", "horse", ["horse", "goat", "both"]]], "14": [["I ___ happy.", "was", ["was", "were", "are"]], ["They ___ wet.", "were", ["were", "was", "is"]], ["She ___ naughty.", "wasn't", ["wasn't", "weren't", "isn't"]], ["We ___ dry.", "were", ["were", "was", "is"]], ["He ___ kind.", "was", ["was", "were", "are"]]], "15": [["The number after first is ___.", "second", ["second", "third", "fourth"]], ["The number after second is ___.", "third", ["third", "fourth", "fifth"]], ["The number after fourth is ___.", "fifth", ["fifth", "sixth", "third"]], ["The number before tenth is ___.", "ninth", ["ninth", "eighth", "eleventh"]], ["The number after seventh is ___.", "eighth", ["eighth", "ninth", "sixth"]]]};
+let currentUnit=1,currentMode='words',qIndex=0,score=0,currentSet=[],xp=0;
+let speakingWords=[],speakingIndex=0,speakingStage='word',currentTarget='',recognition=null;
+
+function show(id){
+ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ window.scrollTo(0,0);
+}
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function setActive(mode){
+ document.querySelectorAll('.mode').forEach(x=>x.classList.remove('active'));
+ document.getElementById('m'+mode[0].toUpperCase()+mode.slice(1)).classList.add('active');
+}
+function buildHome(){
+ const box=document.getElementById('unitList');
+ box.innerHTML=units.map(u=>`<article class="unit" onclick="openUnit(${u.n})">
+ <div class="unitHead"><div class="unitNum">${u.n}</div><div><div class="unitTitle">${u.title}</div><div class="muted">${u.topic}</div></div><div class="arrow">›</div></div>
+ <div class="chips">${u.vocab.slice(0,8).map(v=>`<span class="chip">${v}</span>`).join('')}</div></article>`).join('');
+}
+function openUnit(n){
+ currentUnit=n;
+ const u=units[n-1];
+ document.getElementById('unitContent').innerHTML=
+ `<span class="tag">UNIT ${n}</span>
+ <div class="card hero"><h2>${u.title}</h2><div class="muted">${u.topic}</div>
+ <div class="chips">${u.vocab.map(v=>`<span class="chip">${v}</span>`).join('')}</div></div>
+ <div class="lesson"><b>🧠 Words</b><div class="muted">5 заданий: одно правильное слово из темы + слова-дистракторы из других Units.</div></div>
+ <div class="lesson"><b>🔤 Grammar</b><div class="muted">${u.grammar}</div></div>
+ <div class="lesson"><b>🎧 Listening</b><div class="muted">5 разных фраз. В каждом вопросе только один правильный ответ.</div></div>
+ <div class="lesson"><b>🔊 Phonics</b><div class="muted">${u.phonics}</div></div>
+ <button class="primary" onclick="startMode('words')">🧠 Слова</button>
+ <button class="primary" onclick="startMode('grammar')">🔤 Грамматика</button>
+ <button class="primary" onclick="startMode('listen')">🎧 Аудирование</button>
+ <button class="primary" onclick="startSpeaking()">🗣 Говорение</button>`;
+ show('unit');
+}
+function startMode(mode){currentMode=mode;qIndex=0;score=0;currentSet=[];setActive(mode);show('quiz');renderQuestion()}
+
+function getWordQuestions(){
+ const u=units[currentUnit-1];
+ const topic=[...new Set(u.vocab)];
+ const other=[...new Set(units.filter(x=>x.n!==currentUnit).flatMap(x=>x.vocab))].filter(w=>!topic.includes(w));
+ return shuffle(topic).slice(0,5).map(correct=>({correct,opts:[correct,...shuffle(other).slice(0,3)]}));
+}
+function getGrammarQuestions(){
+ const bank=grammarBank[currentUnit]||[];
+ return shuffle(bank).slice(0,5).map(q=>({text:q[0],correct:q[1],opts:q[2]}));
+}
+function listenSentence(word){
+ const w=String(word).toLowerCase();
+ const plural=new Set(['fries','jeans','gloves','boots','guests','photos','people','presents','nuts','pastries','drawers','computers','crayons','sweets']);
+ if(plural.has(w)) return `These are ${word}.`;
+ if(['art','maths','english','science','pe','music'].includes(w)) return `We have ${word} at school.`;
+ if(['hot','cold','happy','sad','tired','angry','scared','brave','nervous','hungry','thirsty','windy','sunny','raining','snowing'].includes(w)) return `It is ${word} today.`;
+ if(['first','second','third','fourth','fifth','sixth','seventh','eighth','ninth','tenth'].includes(w)) return `This is the ${word} one.`;
+ const article=/^[aeiou]/i.test(w)?'an':'a';
+ return `This is ${article} ${word}.`;
+}
+function getListenQuestions(){
+ const u=units[currentUnit-1];
+ const topic=[...new Set(u.vocab)];
+ const other=[...new Set(units.filter(x=>x.n!==currentUnit).flatMap(x=>x.vocab))].filter(w=>!topic.includes(w));
+ return shuffle(topic).slice(0,5).map(word=>({word,text:listenSentence(word),opts:[word,...shuffle(other).slice(0,3)]}));
+}
+function renderQuestion(){
+ document.getElementById('nextBtn').style.display='none';
+ document.getElementById('feedback').innerHTML='';
+ const u=units[currentUnit-1];
+ if(currentMode==='words'){
+  if(qIndex===0||currentSet.mode!=='words'){currentSet=getWordQuestions();currentSet.mode='words'}
+  const q=currentSet[qIndex];document.getElementById('quizTag').textContent=`WORDS · ${qIndex+1}/5`;
+  document.getElementById('quizQuestion').innerHTML=`Выбери слово из темы: <b>${u.topic}</b>`;
+  document.getElementById('listenBox').style.display='none';renderAnswers(q.opts,q.correct);
+ }else if(currentMode==='grammar'){
+  if(qIndex===0||currentSet.mode!=='grammar'){currentSet=getGrammarQuestions();currentSet.mode='grammar'}
+  const q=currentSet[qIndex];document.getElementById('quizTag').textContent=`GRAMMAR · ${qIndex+1}/5`;
+  document.getElementById('quizQuestion').textContent=q.text;
+  document.getElementById('listenBox').style.display='none';renderAnswers(q.opts,q.correct);
+ }else{
+  if(qIndex===0||currentSet.mode!=='listen'){currentSet=getListenQuestions();currentSet.mode='listen'}
+  const q=currentSet[qIndex];document.getElementById('quizTag').textContent=`LISTEN · ${qIndex+1}/5`;
+  document.getElementById('quizQuestion').innerHTML='Послушай фразу и выбери слово, которое услышал:';
+  document.getElementById('listenBox').style.display='block';renderAnswers(q.opts,q.word);setTimeout(()=>speakCurrent(),120);
+ }
+}
+function renderAnswers(opts,correct){
+ const unique=[...new Set(opts)];const shuffled=shuffle(unique);
+ document.getElementById('answers').innerHTML=shuffled.map((o,i)=>`<button class="answer" data-i="${i}" onclick="answer(this)">${o}</button>`).join('');
+ window.correctAnswer=correct;window.answerOptions=shuffled;
+}
+function answer(el){
+ document.querySelectorAll('.answer').forEach(x=>x.disabled=true);
+ const choice=window.answerOptions[Number(el.dataset.i)],ok=choice===window.correctAnswer;
+ el.classList.add(ok?'correct':'wrong');
+ if(ok){score++;xp+=20}
+ document.getElementById('feedback').innerHTML=ok?'✅ Отлично! +20 XP':'❌ Правильный ответ: <b>'+window.correctAnswer+'</b>';
+ document.getElementById('nextBtn').style.display='block';
+}
+function nextQuestion(){
+ qIndex++;
+ if(qIndex>=5){
+  document.getElementById('quizQuestion').innerHTML=`🏆 Готово!<br><small>Результат: ${score}/5 · +${score*20} XP</small>`;
+  document.getElementById('answers').innerHTML='';
+  document.getElementById('listenBox').style.display='none';
+  document.getElementById('feedback').innerHTML=score>=4?'⭐ Отличная работа!':'💪 Повтори тему и попробуй ещё раз.';
+  document.getElementById('nextBtn').textContent='Вернуться к Unit';
+  document.getElementById('nextBtn').onclick=()=>openUnit(currentUnit);
+ }else{
+  document.getElementById('nextBtn').textContent='Следующее →';
+  document.getElementById('nextBtn').onclick=nextQuestion;
+  renderQuestion();
+ }
+}
+function speakCurrent(){
+ if(!('speechSynthesis' in window))return;
+ let text='';
+ if(currentMode==='listen') text=currentSet[qIndex]?.text||'';
+ else if(currentMode==='words') text=window.correctAnswer||'';
+ else text=document.getElementById('quizQuestion').innerText||'';
+ speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=.82;u.pitch=1.05;speechSynthesis.speak(u);
+}
+function startSpeaking(){
+ speakingWords=units[currentUnit-1].vocab.slice(0,5);speakingIndex=0;show('speaking');renderSpeakingItem();
+}
+function renderSpeakingItem(){
+ const w=speakingWords[speakingIndex];speakingStage='word';currentTarget=w;
+ document.getElementById('speakStage').textContent=`1 · СЛОВО ${speakingIndex+1}/5`;
+ document.getElementById('speakWord').textContent=w;
+ document.getElementById('speakStatus').textContent='Нажми на микрофон и произнеси слово.';
+ document.getElementById('speakResult').style.display='none';document.getElementById('sentenceArea').style.display='none';document.getElementById('speakNext').style.display='none';
+}
+function speakTarget(){
+ if(!('speechSynthesis' in window))return;
+ speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(currentTarget);u.lang='en-US';u.rate=.8;speechSynthesis.speak(u);
+}
+async function startRecognition(){
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SR){document.getElementById('speakStatus').textContent='⚠️ Распознавание речи недоступно в этом браузере.';return}
+ recognition=new SR();recognition.lang='en-US';recognition.interimResults=false;recognition.maxAlternatives=1;
+ recognition.onstart=()=>document.getElementById('speakStatus').textContent='🎙️ Слушаю…';
+ recognition.onerror=()=>document.getElementById('speakStatus').textContent='⚠️ Не удалось распознать. Разреши микрофон и попробуй ещё раз.';
+ recognition.onresult=e=>evaluateSpeech(e.results[0][0].transcript);
+ try{recognition.start()}catch(e){}
+}
+function norm(s){return String(s||'').toLowerCase().replace(/[^a-z\s]/g,'').trim()}
+function similarity(a,b){
+ a=norm(a);b=norm(b);if(a===b)return 100;
+ const A=a.split(' '),B=b.split(' ');let hit=0;A.forEach(x=>{if(B.includes(x))hit++});
+ return Math.round(100*hit/Math.max(A.length,B.length));
+}
+function evaluateSpeech(spoken){
+ const s=similarity(spoken,currentTarget),good=s>=80,r=document.getElementById('speakResult');
+ r.style.display='block';r.innerHTML=`<b>Ты сказал:</b> ${spoken}<div style="font-size:25px;font-weight:900;text-align:center">${s}%</div><div style="text-align:center">${good?'✅ Отлично!':'🔁 Попробуй ещё раз'}</div>`;
+ if(good){showSentences()}else document.getElementById('speakStatus').textContent='Произнеси ещё раз, стараясь говорить чётко.';
+}
+function showSentences(){
+ const w=currentTarget;
+ const templates=[`This is ${/^[aeiou]/i.test(w)?'an':'a'} ${w}.`,`I can see ${/^[aeiou]/i.test(w)?'an':'a'} ${w}.`,`I like ${w}.`];
+ document.getElementById('sentenceArea').style.display='block';
+ document.getElementById('sentenceList').innerHTML=templates.map((s,i)=>`<div class="sentence-item"><b>${i+1}. ${s}</b><button class="secondary" onclick="speakSentence('${s.replace(/'/g,"\\'")}')">🔊 Образец</button></div>`).join('');
+ document.getElementById('speakNext').style.display='block';
+}
+function speakSentence(text){const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=.8;speechSynthesis.cancel();speechSynthesis.speak(u)}
+function nextSpeakingItem(){
+ speakingIndex++;
+ if(speakingIndex>=speakingWords.length){document.getElementById('speakNext').textContent='Вернуться к Unit';document.getElementById('speakNext').onclick=()=>openUnit(currentUnit);return}
+ document.getElementById('speakNext').textContent='Следующее слово →';document.getElementById('speakNext').onclick=nextSpeakingItem;renderSpeakingItem();
+}
+buildHome();
+</script>
+</body></html>
