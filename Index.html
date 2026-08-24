@@ -401,7 +401,30 @@ function nextQuestion(){
 function speakCurrent(){if(!('speechSynthesis' in window)){document.getElementById('feedback').innerHTML='⚠️ В этом браузере голосовое озвучивание недоступно.';return}let text='';if(currentMode==='listen'){text=currentSet[qIndex]?.text||''}else if(currentMode==='words'){text=window.correctAnswer||''}else{text=document.getElementById('quizQuestion').innerText||''}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=.82;u.pitch=1.05;speechSynthesis.speak(u)}
 
 let speakingWords=[],speakingIndex=0,speakingStage='word',speakingScore=0,currentTarget='',recognition=null;
-const sentenceTemplates=[w=>'This is a '+w+'.',w=>'I can see a '+w+'.',w=>'I like my '+w+'.'];
+function makeSpeakingSentences(word){
+ const w=String(word||'').trim();
+ const low=w.toLowerCase();
+ const pluralWords=new Set(['arms','legs','ears','eyes','hands','fingers','socks','trousers','shorts','shoes','grapes','carrots','tomatoes','books','toys','shells','shelves']);
+ const uncountable=new Set(['water','rice','meat','yogurt','juice','fish','milk','hair','sand','sea']);
+ const vowels=/^[aeiou]/i;
+ if(pluralWords.has(low)) return [
+   'These are '+w+'.',
+   'I can see '+w+'.',
+   'I like my '+w+'.'
+ ];
+ if(uncountable.has(low)) return [
+   'This is '+w+'.',
+   'I can see '+w+'.',
+   'I like '+w+'.'
+ ];
+ const article=vowels.test(w)?'an ':'a ';
+ return [
+   'This is '+article+w+'.',
+   'I can see '+article+w+'.',
+   'I like my '+w+'.'
+ ];
+}
+function getSpeakingSentence(i,word){return makeSpeakingSentences(word)[i]||'';}
 function startSpeaking(){if(document.getElementById('micPermission')){document.getElementById('micPermission').className='mic-permission';document.getElementById('micPermissionText').textContent='Нажми «Разрешить микрофон», затем разреши доступ.';}speakingWords=units[currentUnit-1].vocab.slice(0,5);speakingIndex=0;speakingScore=0;show('speaking');renderSpeakingItem()}
 function renderSpeakingItem(){let w=speakingWords[speakingIndex];speakingStage='word';currentTarget=w;document.getElementById('speakStage').textContent='1 · СЛОВО '+(speakingIndex+1)+'/5';document.getElementById('speakWord').textContent=w;document.getElementById('speakStatus').textContent='Нажми на микрофон и произнеси слово.';document.getElementById('speakResult').style.display='none';document.getElementById('sentenceArea').style.display='none';document.getElementById('speakNext').style.display='none'}
 function normalizeSpeech(s){return(s||'').toLowerCase().replace(/[.,!?;:'"“”‘’]/g,'').replace(/\s+/g,' ').trim()}
@@ -453,8 +476,8 @@ async function ensureMicBeforeRecognition(){
 
 async function startRecognition(){if(!(await ensureMicBeforeRecognition()))return;let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){document.getElementById('speakStatus').textContent='⚠️ Этот браузер не поддерживает распознавание речи. Попробуй Safari/Chrome с доступом к микрофону.';return}recognition=new SR();recognition.lang='en-US';recognition.interimResults=false;recognition.maxAlternatives=1;recognition.onstart=()=>{document.getElementById('micButton').classList.add('listening');document.getElementById('speakStatus').textContent='🎙️ Слушаю…'};recognition.onend=()=>document.getElementById('micButton').classList.remove('listening');recognition.onerror=()=>document.getElementById('speakStatus').textContent='⚠️ Не удалось распознать. Разреши микрофон и попробуй ещё раз.';recognition.onresult=e=>evaluateSpeech(e.results[0][0].transcript);try{recognition.start()}catch(e){}}
 function evaluateSpeech(spoken){let score=similarity(spoken,currentTarget),good=score>=80,r=document.getElementById('speakResult');r.style.display='block';r.innerHTML='<b>Ты сказал:</b> '+spoken+'<div class="speak-score">'+score+'%</div><div style="text-align:center">'+(good?'✅ Отлично!':'🔁 Попробуй ещё раз')+'</div>';if(good){if(speakingStage==='word'){speakingScore++;showSentences()}else document.getElementById('speakNext').style.display='block'}else document.getElementById('speakStatus').textContent='Произнеси ещё раз, стараясь говорить чётко.'}
-function showSentences(){speakingStage='sentences';let w=speakingWords[speakingIndex],ss=sentenceTemplates.map(f=>f(w));document.getElementById('speakStage').textContent='3 · ПРЕДЛОЖЕНИЯ';document.getElementById('sentenceArea').style.display='block';document.getElementById('sentenceList').innerHTML=ss.map((s,i)=>'<div class="sentence-item"><b>'+(i+1)+'. '+s+'</b><button class="secondary" onclick="speakSentence('+i+')">🔊 Образец</button><button class="secondary" style="margin-left:6px" onclick="repeatSentence('+i+')">🎙️ Повторить</button></div>').join('');document.getElementById('speakStatus').textContent='Послушай образец и повтори предложение.'}
-function setSentence(i){currentTarget=sentenceTemplates[i](speakingWords[speakingIndex]);document.getElementById('speakStatus').textContent='Нажми 🎙️ и произнеси предложение.'}
+function showSentences(){speakingStage='sentences';let w=speakingWords[speakingIndex],ss=makeSpeakingSentences(w);document.getElementById('speakStage').textContent='3 · ПРЕДЛОЖЕНИЯ';document.getElementById('sentenceArea').style.display='block';document.getElementById('sentenceList').innerHTML=ss.map((s,i)=>'<div class="sentence-item"><b>'+(i+1)+'. '+s+'</b><button class="secondary" onclick="speakSentence('+i+')">🔊 Образец</button><button class="secondary" style="margin-left:6px" onclick="repeatSentence('+i+')">🎙️ Повторить</button></div>').join('');document.getElementById('speakStatus').textContent='Послушай образец и повтори предложение.'}
+function setSentence(i){currentTarget=getSpeakingSentence(i,speakingWords[speakingIndex]);document.getElementById('speakStatus').textContent='Нажми 🎙️ и произнеси предложение.'}
 async function repeatSentence(i){setSentence(i);await startRecognition()}
 function speakSentence(i){setSentence(i);speakText(currentTarget)}
 function speakTarget(){speakText(currentTarget)}
