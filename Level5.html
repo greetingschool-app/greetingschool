@@ -27,7 +27,92 @@ main{padding:24px 18px} .card,.unit,.quiz-card{background:#f8f8fc;border:1px sol
 <nav class="bottom"><button class="nav active" id="navHome">🏠<br>Курс</button><button class="nav" id="navUnit">⚡<br>Тренировка</button><button class="nav" id="navProgress">📈<br>Прогресс</button></nav></div>
 <script>
 const units=[{"n": 1, "title": "You can build it!", "topic": "Tools & making things", "grammar": "Present perfect: ever / never; for / since", "vocab": ["rope", "saw", "hammer", "roller", "tray", "nail", "tools", "tape measure", "tree house", "board", "ladder", "toolbox", "shade", "branches"]}, {"n": 2, "title": "It’s show time!", "topic": "Putting on a play", "grammar": "Past simple and present perfect; already / yet / before / just", "vocab": ["curtain", "stage", "script", "lights", "make-up", "character", "costume", "audience", "servant", "diamond", "detective", "arrest", "robbery", "criminal"]}, {"n": 3, "title": "The best party ever!", "topic": "Parties & carnival", "grammar": "Comparatives and superlatives; as...as; too / enough", "vocab": ["parade", "speakers", "mask", "float", "microphone", "crowd", "dancers", "stilts", "clap", "cheer", "plug in", "wave", "costume", "carnival"]}, {"n": 4, "title": "Our planet", "topic": "Environment & eco homes", "grammar": "Past simple and past continuous; used to", "vocab": ["damage", "clean up", "environment", "litter", "planet", "pollution", "rubbish dump", "wildlife", "wildlife park", "solar panel", "fossil fuels", "alternative energy", "electricity", "skylight"]}, {"n": 5, "title": "Reuse and recycle", "topic": "Recycling", "grammar": "will / won’t; present continuous with future meaning", "vocab": ["oil", "bottle bank", "carrier bag", "paper", "chemicals", "recycling centre", "metal", "battery", "remove", "return", "recycle", "reuse", "retell", "rewrite"]}, {"n": 6, "title": "Crazy about wildlife!", "topic": "Wildlife park & animals", "grammar": "going to: plans and predictions", "vocab": ["insect house", "pool", "enclosure", "picnic area", "reptile house", "aviary", "gift shop", "aquarium", "keeper", "presenter", "singer", "inventor", "actor", "visitor", "endangered"]}, {"n": 7, "title": "Call an ambulance!", "topic": "First aid & emergencies", "grammar": "Reported speech; said / told; time markers", "vocab": ["burn", "first aid kit", "bruise", "bandage", "cut", "sling", "patient", "plaster", "put on", "take off", "put away", "get out", "pick up", "rescue"]}, {"n": 8, "title": "Let’s eat healthily", "topic": "Healthy eating", "grammar": "First conditional", "vocab": ["additives", "dairy products", "health food", "home-made", "ingredients", "junk food", "ready-made", "sugar", "get up", "get on with", "get on", "get off", "energy", "calories"]}, {"n": 9, "title": "The big match", "topic": "Sport & the body", "grammar": "may / might / could; have to / had to", "vocab": ["athlete", "coach", "training", "trophy", "goalkeeper", "fan", "exercise", "captain", "best", "worst", "win", "lose", "oxygen", "lungs"]}, {"n": 10, "title": "Ancient buildings", "topic": "Archaeology & ancient places", "grammar": "Indefinite pronouns; question tags", "vocab": ["archaeologist", "column", "statue", "steps", "block", "pot", "jewellery", "carving", "wonderful", "cheerful", "helpful", "careful", "playful", "ruins"]}, {"n": 11, "title": "A message for the future", "topic": "Time capsules & media", "grammar": "Passive and active: present simple", "vocab": ["time capsule", "bank note", "photo album", "manual", "diary", "memory stick", "stamp", "receipt", "comedy", "confident", "creatures", "director", "novel", "performance"]}, {"n": 12, "title": "Be part of history!", "topic": "News, jobs & history", "grammar": "Passive: past simple; passive questions", "vocab": ["photographer", "microphone", "flash", "lens", "reporter", "interview", "article", "news", "interesting", "frightening", "relaxing", "exciting", "amazing", "salary", "scientist"]}];
-const grammarMap=[[["Have you ever built a tree house?", "Have you ever build a tree house?", "Did you ever built a tree house?"], ["She has lived here since 2020.", "She has lived here for 2020.", "She lived here since 2020."], ["We have used this toolbox for two years.", "We have used this toolbox since two years.", "We use this toolbox for two years."], ["I have never used a tape measure.", "I never have used a tape measure.", "I have never use a tape measure."], ["Have they ever made a tree house?", "Have they ever make a tree house?", "Did they ever made a tree house?"]], [["I’ve just finished the script.", "I’ve just finish the script.", "I just finished the script yet."], ["She hasn’t learnt the lines yet.", "She hasn’t learnt the lines already.", "She didn’t learnt the lines yet."], ["We have already opened the curtain.", "We have yet opened the curtain.", "We already open the curtain."], ["He has just put on his costume.", "He has just putted on his costume.", "He just puts on his costume."], ["Have you seen the play before?", "Have you saw the play before?", "Did you seen the play before?"]], [["This float is more colourful than that one.", "This float is colourfuller than that one.", "This float is most colourful than that one."], ["The speakers are as loud as the microphone is.", "The speakers are as loud than the microphone is.", "The speakers are as louder as the microphone is."], ["That is the biggest parade in town.", "That is the most big parade in town.", "That is the bigger parade in town."], ["The stilts are too high for me.", "The stilts are enough high for me.", "The stilts are too enough high for me."], ["The costume is colourful enough for the show.", "The costume is enough colourful for the show.", "The costume is too enough colourful for the show."]], [["There used to be lots of litter here.", "There use to be lots of litter here.", "There used be lots of litter here."], ["We were cleaning up when it started to rain.", "We was cleaning up when it started to rain.", "We were clean up when it started to rain."], ["The children were picking up rubbish.", "The children was picking up rubbish.", "The children were pick up rubbish."], ["People used to use more fossil fuels.", "People use to used more fossil fuels.", "People used used more fossil fuels."], ["I was looking at the solar panels when you called.", "I were looking at the solar panels when you called.", "I was look at the solar panels when you called."]], [["We are leaving at two o’clock tomorrow.", "We is leaving at two o’clock tomorrow.", "We are leave at two o’clock tomorrow."], ["I’m meeting my class at the recycling centre tomorrow.", "I meeting my class at the recycling centre tomorrow.", "I’m meet my class at the recycling centre tomorrow."], ["She will recycle the bottles.", "She will recycled the bottles.", "She will recycling the bottles."], ["They won’t throw the battery away.", "They won’t threw the battery away.", "They don’t will throw the battery away."], ["We are returning the bottles on Saturday.", "We returning the bottles on Saturday.", "We are return the bottles on Saturday."]], [["We are going to visit the reptile house.", "We going to visit the reptile house.", "We are go to visit the reptile house."], ["I think the tiger is going to sleep.", "I think the tiger going to sleep.", "I think the tiger is go to sleep."], ["They are going to see the aquarium tomorrow.", "They going to see the aquarium tomorrow.", "They are going see the aquarium tomorrow."], ["She is going to be a keeper one day.", "She going to be a keeper one day.", "She is going be a keeper one day."], ["Are you going to visit the aviary?", "Are you going visit the aviary?", "Do you going to visit the aviary?"]], [["He said he needed a bandage.", "He said he need a bandage.", "He said he needs a bandage."], ["She told me she was hurt.", "She told me she is hurt.", "She said me she was hurt."], ["Tom said he had a bruise.", "Tom said he has a bruise.", "Tom told he had a bruise."], ["Mia told us she needed the first aid kit.", "Mia told us she needs the first aid kit.", "Mia said us she needed the first aid kit."], ["He said he had cut his hand.", "He said he has cut his hand.", "He told he had cut his hand."]], [["If I eat too much sugar, I will feel sick.", "If I eat too much sugar, I would feel sick.", "If I will eat too much sugar, I feel sick."], ["If you eat healthily, you will have more energy.", "If you will eat healthily, you have more energy.", "If you ate healthily, you will have more energy."], ["If we don’t eat breakfast, we will be hungry.", "If we won’t eat breakfast, we will be hungry.", "If we don’t eat breakfast, we are be hungry."], ["You will feel better if you eat home-made food.", "You will feel better if you will eat home-made food.", "You feel better if you will eat home-made food."], ["If there are too many additives, I won’t buy it.", "If there will be too many additives, I won’t buy it.", "If there are too many additives, I don’t will buy it."]], [["I might need more exercise.", "I might to need more exercise.", "I might needing more exercise."], ["She may be tired after training.", "She may to be tired after training.", "She may is tired after training."], ["We could win the match.", "We could to win the match.", "We could winning the match."], ["He had to train yesterday.", "He has to train yesterday.", "He had train yesterday."], ["They have to wear sports shoes.", "They have wear sports shoes.", "They have to wearing sports shoes."]], [["There is something interesting in the ruins.", "There is anything interesting in the ruins.", "There is some interesting in the ruins."], ["Everyone enjoyed the ancient building.", "Anyone enjoyed the ancient building.", "Every enjoyed the ancient building."], ["These statues are beautiful, aren’t they?", "These statues are beautiful, are they?", "These statues are beautiful, isn’t it?"], ["Nobody was in the museum, was there?", "Nobody was in the museum, wasn’t there?", "Nobody were in the museum, was there?"], ["Someone found a pot, didn’t they?", "Someone found a pot, did they?", "Someone find a pot, didn’t they?"]], [["English is spoken in many countries.", "English speaks in many countries.", "English is speak in many countries."], ["The diary is kept in the time capsule.", "The diary keeps in the time capsule.", "The diary is keep in the time capsule."], ["Photos are put in the album.", "Photos put in the album.", "Photos are puts in the album."], ["A receipt is kept for a long time.", "A receipt kept for a long time.", "A receipt is keeped for a long time."], ["The manual is read by many people.", "The manual reads by many people.", "The manual is readed by many people."]], [["The article was written by a reporter.", "The article was write by a reporter.", "The article wrote by a reporter."], ["Was the interview recorded yesterday?", "Did the interview recorded yesterday?", "Was the interview record yesterday?"], ["The photos were taken by a photographer.", "The photos was taken by a photographer.", "The photos were took by a photographer."], ["The microphone was used during the interview.", "The microphone were used during the interview.", "The microphone was use during the interview."], ["Where was the news reported?", "Where did the news reported?", "Where was the news report?"]]];
+const grammarMap=[
+[
+ {q:"Have you ___ built a tree house?",opts:["ever","never","yet"],correct:"ever"},
+ {q:"She has lived here ___ 2020.",opts:["since","for","from"],correct:"since"},
+ {q:"We have used this toolbox ___ two years.",opts:["for","since","at"],correct:"for"},
+ {q:"I have ___ used a tape measure.",opts:["never","ever","already"],correct:"never"},
+ {q:"Have they ___ made a tree house?",opts:["ever","never","since"],correct:"ever"}
+],
+[
+ {q:"I've ___ finished the script.",opts:["just","yet","before"],correct:"just"},
+ {q:"She hasn't learnt the lines ___.",opts:["yet","already","just"],correct:"yet"},
+ {q:"We have ___ opened the curtain.",opts:["already","yet","before"],correct:"already"},
+ {q:"He has ___ put on his costume.",opts:["just","yet","already"],correct:"just"},
+ {q:"Have you seen the play ___?",opts:["before","already","just"],correct:"before"}
+],
+[
+ {q:"This float is ___ colourful than that one.",opts:["more","most","as"],correct:"more"},
+ {q:"The speakers are ___ loud as the microphone.",opts:["as","more","too"],correct:"as"},
+ {q:"That is the ___ parade in town.",opts:["biggest","bigger","most big"],correct:"biggest"},
+ {q:"The stilts are ___ high for me.",opts:["too","enough","as"],correct:"too"},
+ {q:"The costume is colourful ___ for the show.",opts:["enough","too","as"],correct:"enough"}
+],
+[
+ {q:"There ___ to be lots of litter here.",opts:["used","use","using"],correct:"used"},
+ {q:"We ___ cleaning up when it started to rain.",opts:["were","was","are"],correct:"were"},
+ {q:"The children were ___ up rubbish.",opts:["picking","pick","picked"],correct:"picking"},
+ {q:"People used to ___ more fossil fuels.",opts:["use","used","using"],correct:"use"},
+ {q:"I was ___ at the solar panels when you called.",opts:["looking","look","looked"],correct:"looking"}
+],
+[
+ {q:"We ___ leaving at two o'clock tomorrow.",opts:["are","is","be"],correct:"are"},
+ {q:"I'm ___ my class at the recycling centre tomorrow.",opts:["meeting","meet","met"],correct:"meeting"},
+ {q:"She ___ recycle the bottles.",opts:["will","will to","is"],correct:"will"},
+ {q:"They ___ throw the battery away.",opts:["won't","don't will","aren't will"],correct:"won't"},
+ {q:"We are ___ the bottles on Saturday.",opts:["returning","return","returned"],correct:"returning"}
+],
+[
+ {q:"We are ___ to visit the reptile house.",opts:["going","go","goes"],correct:"going"},
+ {q:"I think the tiger ___ going to sleep.",opts:["is","are","be"],correct:"is"},
+ {q:"They are going ___ see the aquarium tomorrow.",opts:["to","for","at"],correct:"to"},
+ {q:"She is going to ___ a keeper one day.",opts:["be","is","being"],correct:"be"},
+ {q:"___ you going to visit the aviary?",opts:["Are","Do","Is"],correct:"Are"}
+],
+[
+ {q:"He said he ___ a bandage.",opts:["needed","needs","need"],correct:"needed"},
+ {q:"She told me she ___ hurt.",opts:["was","is","were"],correct:"was"},
+ {q:"Tom said he ___ a bruise.",opts:["had","has","have"],correct:"had"},
+ {q:"Mia ___ us she needed the first aid kit.",opts:["told","said","says"],correct:"told"},
+ {q:"He said he ___ cut his hand.",opts:["had","has","have"],correct:"had"}
+],
+[
+ {q:"If I eat too much sugar, I ___ feel sick.",opts:["will","would","am"],correct:"will"},
+ {q:"If you eat healthily, you ___ have more energy.",opts:["will","would","are"],correct:"will"},
+ {q:"If we ___ eat breakfast, we will be hungry.",opts:["don't","won't","didn't"],correct:"don't"},
+ {q:"You will feel better if you ___ home-made food.",opts:["eat","will eat","ate"],correct:"eat"},
+ {q:"If there are too many additives, I ___ buy it.",opts:["won't","don't","wouldn't"],correct:"won't"}
+],
+[
+ {q:"It ___ rain later, so take an umbrella.",opts:["might","has to","had to"],correct:"might"},
+ {q:"We ___ win the match — anything is possible!",opts:["could","have to","had to"],correct:"could"},
+ {q:"You ___ wear a helmet when you ride a bike.",opts:["have to","might","could"],correct:"have to"},
+ {q:"The team ___ train yesterday because of the match.",opts:["had to","has to","might"],correct:"had to"},
+ {q:"She ___ be at the training now; I'm not sure.",opts:["may","has to","had to"],correct:"may"}
+],
+[
+ {q:"There is ___ in the ancient room.",opts:["someone","anything","nowhere"],correct:"someone"},
+ {q:"Did you find ___ interesting in the museum?",opts:["anything","someone","nowhere"],correct:"anything"},
+ {q:"___ knows who built these ruins.",opts:["Nobody","Anything","Anywhere"],correct:"Nobody"},
+ {q:"The ruins are very old, ___?",opts:["aren't they","are they","weren't they"],correct:"aren't they"},
+ {q:"Everyone enjoyed the museum, ___?",opts:["didn't they","did they","wasn't it"],correct:"didn't they"}
+],
+[
+ {q:"English ___ in many countries.",opts:["is spoken","speaks","is speaking"],correct:"is spoken"},
+ {q:"People ___ these time capsules every year.",opts:["open","are opened","is opened"],correct:"open"},
+ {q:"The museum ___ at nine o'clock every day.",opts:["opens","is opened","opening"],correct:"opens"},
+ {q:"These photos ___ by children.",opts:["are taken","take","is taken"],correct:"are taken"},
+ {q:"The diary ___ in a safe place.",opts:["is kept","keeps","is keeping"],correct:"is kept"}
+],
+[
+ {q:"The ancient building ___ in 1900.",opts:["was built","built","was build"],correct:"was built"},
+ {q:"The article ___ by a reporter yesterday.",opts:["was written","wrote","was write"],correct:"was written"},
+ {q:"When ___ the museum opened?",opts:["was","did","were"],correct:"was"},
+ {q:"Where ___ the photographs taken?",opts:["were","did","was"],correct:"were"},
+ {q:"The statue ___ in 1850.",opts:["was discovered","discovered","was discover"],correct:"was discovered"}
+]
+];
 const icons=["🔨", "🎭", "🎉", "🌍", "♻️", "🦁", "🩹", "🥗", "⚽", "🏛️", "📦", "📰"];
 let currentUnit=1,currentMode='words',qIndex=0,currentSet=[],correctAnswer='',score=0,speakIndex=0,speakWords=[],recognition=null;
 function $(id){return document.getElementById(id)}
@@ -43,7 +128,7 @@ function listenPhrase(word){const plural=/s$/.test(word)&&!/(ss|us|is)$/.test(wo
 function getListen(){const u=units[currentUnit-1];return shuffle(u.vocab).slice(0,5).map(word=>({word,text:listenPhrase(word)}))}
 function renderQuestion(){$('feedback').style.display='none';$('nextBtn').style.display='none';$('listenBox').innerHTML='';const u=units[currentUnit-1];
 if(currentMode==='words'){if(qIndex===0)currentSet=getWords();const q=currentSet[qIndex];$('quizTag').textContent=`WORDS · ${qIndex+1}/5`;$('quizQuestion').innerHTML=`Выбери слово из темы: <b>${esc(u.topic)}</b>`;setAnswers(q.opts,q.correct)}
-else if(currentMode==='grammar'){if(qIndex===0)currentSet=grammarMap[currentUnit-1];const q=currentSet[qIndex];$('quizTag').textContent=`GRAMMAR · ${qIndex+1}/5`;$('quizQuestion').innerHTML=`<div class="visual">${icons[currentUnit-1]}</div>${esc(q[0])}`;setAnswers([q[0],q[1],q[2]],q[0])}
+else if(currentMode==='grammar'){if(qIndex===0)currentSet=grammarMap[currentUnit-1];const q=currentSet[qIndex];$('quizTag').textContent=`GRAMMAR · ${qIndex+1}/5`;$('quizQuestion').innerHTML=`<div class="visual">${icons[currentUnit-1]}</div><div class="grammarSentence">${esc(q.q)}</div>`;setAnswers(q.opts,q.correct)}
 else if(currentMode==='listen'){if(qIndex===0)currentSet=getListen();const q=currentSet[qIndex];$('quizTag').textContent=`LISTEN · ${qIndex+1}/5`;$('quizQuestion').textContent='Послушай фразу и выбери слово, которое услышал:';$('listenBox').innerHTML='<div class="listen"><button id="playListen">🔊</button><div style="margin-top:8px;color:#666">Нажми, чтобы прослушать</div></div>';setAnswers([q.word,...shuffle(units.filter(x=>x.n!==currentUnit).flatMap(x=>x.vocab).filter(x=>x!==q.word)).slice(0,3)],q.word);$('playListen').addEventListener('click',()=>speakText(q.text));speakText(q.text)}}
 function answer(el,choice){document.querySelectorAll('.answer').forEach(x=>x.disabled=true);const ok=choice===correctAnswer;el.classList.add(ok?'correct':'wrong');$('feedback').style.display='block';$('feedback').innerHTML=ok?'✅ Отлично! +20 XP':'❌ Правильный ответ: <b>'+esc(correctAnswer)+'</b>';score+=ok?1:0;$('nextBtn').style.display='block'}
 function nextQuestion(){qIndex++;if(qIndex>=5){$('feedback').style.display='block';$('feedback').innerHTML=`🏆 Unit завершён! Результат: <b>${score}/5</b>`;$('nextBtn').style.display='none';return}renderQuestion()}
