@@ -193,24 +193,120 @@ function next(){
  render();
 }
 
-function recognize(target){
+let activeRecognition=null;
+
+function normalizeSpeech(v){
+ return String(v||'').toLowerCase()
+   .replace(/[.,!?;:]/g,' ')
+   .replace(/\\s+/g,' ')
+   .trim();
+}
+
+async function requestMic(){
+ if(!window.isSecureContext){
+   throw new Error('secure');
+ }
+ if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+   throw new Error('media');
+ }
+ const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+ // We only need the permission. SpeechRecognition will use the microphone itself.
+ stream.getTracks().forEach(t=>t.stop());
+}
+
+async function recognize(target){
  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ const btn=document.getElementById('checkSpeak');
+
  if(!SR){
-   showFeedback('⚠️ Распознавание речи недоступно в этом браузере. Для Speaking нужен браузер с поддержкой микрофона.');
+   showFeedback('⚠️ Этот браузер не поддерживает распознавание речи. Открой Level 4 в Safari на iPhone и разреши доступ к микрофону.');
    return;
  }
+
+ if(activeRecognition){
+   try{activeRecognition.abort();}catch(e){}
+   activeRecognition=null;
+ }
+
+ if(btn){
+   btn.disabled=true;
+   btn.textContent='🎙️ Подготовка микрофона…';
+ }
+
+ try{
+   // Explicitly request microphone permission first. This fixes the common
+   // iPhone/Safari case where SpeechRecognition silently fails before permission.
+   await requestMic();
+ }catch(e){
+   if(btn){btn.disabled=false; btn.textContent='🎙️ Проверить';}
+   if(e && e.name==='NotAllowedError'){
+     showFeedback('🔒 Доступ к микрофону запрещён. В настройках iPhone разреши микрофон для Safari и попробуй снова.');
+   }else if(e && e.name==='NotFoundError'){
+     showFeedback('🎙️ Микрофон не найден. Проверь, что микрофон доступен и попробуй ещё раз.');
+   }else{
+     showFeedback('⚠️ Не удалось получить доступ к микрофону. Открой сайт в Safari и разреши микрофон.');
+   }
+   return;
+ }
+
  try{
    const r=new SR();
-   r.lang='en-US'; r.interimResults=false; r.maxAlternatives=1;
-   r.onresult=e=>{
-     const said=e.results[0][0].transcript.toLowerCase().trim();
-     const ok=said===target.toLowerCase();
-     showFeedback(ok?'✅ Отлично!':'🔁 Ты сказал: '+htmlEscape(said)+'<br>Попробуй ещё раз.');
+   activeRecognition=r;
+   r.lang='en-US';
+   r.interimResults=false;
+   r.continuous=false;
+   r.maxAlternatives=3;
+
+   r.onstart=()=>{
+     if(btn){
+       btn.disabled=false;
+       btn.textContent='🎙️ Слушаю…';
+     }
+     showFeedback('🎧 Говори сейчас…');
    };
-   r.onerror=()=>showFeedback('⚠️ Не удалось распознать. Разреши микрофон и попробуй ещё раз.');
+
+   r.onresult=e=>{
+     let said='';
+     if(e.results && e.results[0]){
+       for(let i=0;i<e.results[0].length;i++){
+         const t=e.results[0][i].transcript||'';
+         if(!said || e.results[0][i].confidence>(e.results[0][0].confidence||0)) said=t;
+       }
+     }
+     said=said.trim();
+     const ok=normalizeSpeech(said)===normalizeSpeech(target);
+     showFeedback(ok
+       ? '✅ Отлично!'
+       : '🔁 Ты сказал: <b>'+htmlEscape(said||'—')+'</b><br>Правильно: <b>'+htmlEscape(target)+'</b>. Попробуй ещё раз.');
+   };
+
+   r.onerror=e=>{
+     let msg='⚠️ Не удалось распознать речь. Попробуй ещё раз.';
+     if(e.error==='not-allowed' || e.error==='service-not-allowed'){
+       msg='🔒 Доступ к микрофону запрещён. Разреши микрофон для Safari в настройках iPhone.';
+     }else if(e.error==='no-speech'){
+       msg='🎧 Я не услышал речь. Нажми «Проверить» и произнеси слово после «Слушаю…».';
+     }else if(e.error==='audio-capture'){
+       msg='🎙️ Не удалось получить звук с микрофона. Проверь разрешение микрофона.';
+     }else if(e.error==='network'){
+       msg='🌐 Сервис распознавания речи недоступен. Проверь интернет и попробуй ещё раз.';
+     }
+     showFeedback(msg);
+   };
+
+   r.onend=()=>{
+     activeRecognition=null;
+     if(btn){
+       btn.disabled=false;
+       btn.textContent='🎙️ Проверить';
+     }
+   };
+
    r.start();
  }catch(e){
-   showFeedback('⚠️ Не удалось запустить микрофон. Проверь разрешение браузера.');
+   activeRecognition=null;
+   if(btn){btn.disabled=false; btn.textContent='🎙️ Проверить';}
+   showFeedback('⚠️ Не удалось запустить распознавание. Открой сайт в Safari и разреши микрофон.');
  }
 }
 
