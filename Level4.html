@@ -177,9 +177,10 @@ function renderListen(u){
 function renderSpeak(u){
  const w=u.vocab[q];
  const c=document.getElementById('content');
- c.innerHTML='<div class="card"><span class="tag">SPEAKING · '+(q+1)+'/5</span><h2>'+htmlEscape(w)+'</h2><div class="listenbox"><button id="speakSample" class="speakbtn" aria-label="Послушать образец">🔊</button><p class="muted">Послушай образец, затем произнеси слово.</p><button id="checkSpeak" class="primary">🎙️ Проверить</button><div id="fb"></div></div></div>';
+ c.innerHTML='<div class="card"><span class="tag">SPEAKING · '+(q+1)+'/5</span><h2>'+htmlEscape(w)+'</h2><div class="listenbox"><button id="speakSample" class="speakbtn" aria-label="Послушать образец">🔊</button><p class="muted">Послушай образец, затем произнеси слово.</p><button id="checkSpeak" class="primary">🎙️ Проверить</button><div id="fb"></div><button id="nextSpeak" class="primary" style="display:none;margin-top:14px">Следующее →</button></div></div>';
  document.getElementById('speakSample').addEventListener('click',()=>speak(w));
  document.getElementById('checkSpeak').addEventListener('click',()=>recognize(w));
+ document.getElementById('nextSpeak').addEventListener('click',next);
 }
 
 function next(){
@@ -275,9 +276,15 @@ async function recognize(target){
      }
      said=said.trim();
      const ok=normalizeSpeech(said)===normalizeSpeech(target);
-     showFeedback(ok
-       ? '✅ Отлично!'
-       : '🔁 Ты сказал: <b>'+htmlEscape(said||'—')+'</b><br>Правильно: <b>'+htmlEscape(target)+'</b>. Попробуй ещё раз.');
+     if(ok){
+       score++;
+       showFeedback('✅ Отлично!');
+       const nextBtn=document.getElementById('nextSpeak');
+       if(nextBtn) nextBtn.style.display='block';
+       if(btn) btn.style.display='none';
+     }else{
+       showFeedback('🔁 Ты сказал: <b>'+htmlEscape(said||'—')+'</b><br>Правильно: <b>'+htmlEscape(target)+'</b>. Попробуй ещё раз.');
+     }
    };
 
    r.onerror=e=>{
