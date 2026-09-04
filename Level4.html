@@ -34,90 +34,195 @@ footer button{border:0;background:none;font-size:16px;color:#777b91} footer .sel
 <div>15 Units · адаптивные задания</div>
 </header>
 <main>
-<button class="back" onclick="home()">← Назад</button>
+<button class="back">← Назад</button>
 <div class="tabs">
-<button id="tWords" class="tab active" onclick="mode('words')">🧠 Words</button>
-<button id="tGrammar" class="tab" onclick="mode('grammar')">🔤 Grammar</button>
-<button id="tListen" class="tab" onclick="mode('listen')">🎧 Listen</button>
-<button id="tSpeak" class="tab" onclick="mode('speak')">🎙️ Speaking</button>
+<button id="tWords" class="tab active">🧠 Words</button>
+<button id="tGrammar" class="tab">🔤 Grammar</button>
+<button id="tListen" class="tab">🎧 Listen</button>
+<button id="tSpeak" class="tab">🎙️ Speaking</button>
 </div>
 <section id="home"></section>
 <section id="content" style="display:none"></section>
 </main>
 <footer>
-<button class="sel" onclick="home()">🏠<br>Курс</button>
-<button onclick="home()">⚡<br>Тренировка</button>
-<button onclick="home()">📈<br>Прогресс</button>
+<button class="sel">🏠<br>Курс</button>
+<button>⚡<br>Тренировка</button>
+<button>📈<br>Прогресс</button>
 </footer>
 <script>
+
 const units=[{"n": 1, "title": "The food here is great!", "topic": "Food & eating out", "vocab": ["waiter", "menu", "customer", "olive oil", "noodles"], "grammar": "Present simple / present continuous"}, {"n": 2, "title": "We had a concert", "topic": "Music & concerts", "vocab": ["concert", "drums", "violin", "audience", "stage"], "grammar": "Past simple: was / were / regular verbs"}, {"n": 3, "title": "The dinosaur museum", "topic": "Dinosaurs & museums", "vocab": ["dinosaur", "museum", "skeleton", "scientist", "asteroid"], "grammar": "Past simple: irregular verbs / questions / negatives"}, {"n": 4, "title": "Whose jacket is this?", "topic": "Sport & possessions", "vocab": ["team", "jacket", "trainers", "trophy", "player"], "grammar": "Possessive pronouns"}, {"n": 5, "title": "Go back to the roundabout", "topic": "Directions", "vocab": ["turn left", "roundabout", "traffic light", "get lost", "go straight on"], "grammar": "have to / had to; why / because"}, {"n": 6, "title": "The best bed!", "topic": "Furniture & describing things", "vocab": ["comfortable", "expensive", "wooden", "modern", "enormous"], "grammar": "Comparatives and superlatives"}, {"n": 7, "title": "Will it really happen?", "topic": "The future", "vocab": ["passenger", "luggage", "passport", "journey", "fireworks"], "grammar": "will / won't"}, {"n": 8, "title": "How much time have we got?", "topic": "Quantity & time", "vocab": ["minutes", "hours", "money", "tickets", "water"], "grammar": "much / many; some / any"}, {"n": 9, "title": "Something new to watch!", "topic": "TV & entertainment", "vocab": ["cartoon", "documentary", "channel", "advert", "remote control"], "grammar": "Infinitive of purpose; How often...?"}, {"n": 10, "title": "I've printed my homework", "topic": "Computers & technology", "vocab": ["printer", "screen", "keyboard", "website", "memory stick"], "grammar": "Present perfect"}, {"n": 11, "title": "Have you ever been…?", "topic": "Places & experiences", "vocab": ["volcano", "village", "rainforest", "desert", "expedition"], "grammar": "Present perfect: ever / never"}, {"n": 12, "title": "What's the matter?", "topic": "Health & illness", "vocab": ["headache", "cough", "earache", "sore throat", "medicine"], "grammar": "should / shouldn't; could / couldn't"}, {"n": 13, "title": "Can you help me?", "topic": "Making smoothies & helping", "vocab": ["smoothie", "blender", "strawberry", "mango", "recipe"], "grammar": "Object pronouns; who / which"}, {"n": 14, "title": "We were fishing", "topic": "Family & memories", "vocab": ["wife", "husband", "niece", "nephew", "relatives"], "grammar": "Past continuous; was born"}, {"n": 15, "title": "Good news, bad news", "topic": "Jobs & wishes", "vocab": ["boss", "office", "builder", "vet", "journalist"], "grammar": "Past simple / past continuous; there / they're / their"}];
 const grammar=[[["Which sentence is correct?", "They usually eat at the café.", "They are usually eat at the café.", "They usually eating at the café."], ["Which sentence is correct?", "The waiter is carrying the soup now.", "The waiter carrying the soup now.", "The waiter is carry the soup now."], ["Choose the correct form: We ___ breakfast every day.", "eat", "are eating", "eating"], ["Choose the correct form: Look! The chef ___ dinner.", "is cooking", "cooks", "cook"], ["Choose the correct sentence.", "There are two menus on the table.", "There is two menus on the table.", "There are a menu on the table."]], [["Which sentence is correct?", "We had a concert yesterday.", "We have a concert yesterday.", "We has a concert yesterday."], ["Choose the past of be: They ___ at the concert.", "were", "was", "are"], ["Choose the correct form: She ___ the drums last night.", "played", "play", "plays"], ["Which sentence is correct?", "The audience cheered loudly.", "The audience cheer loudly yesterday.", "The audience cheering loudly yesterday."], ["Choose the correct question.", "Did you enjoy the concert?", "Did you enjoyed the concert?", "Do you enjoyed the concert?"]], [["Which sentence is correct?", "We saw a dinosaur at the museum.", "We see a dinosaur at the museum yesterday.", "We seed a dinosaur at the museum."], ["Choose the correct negative.", "They didn't see the skeleton.", "They didn't saw the skeleton.", "They don't saw the skeleton."], ["Choose the correct question.", "Did she find the model?", "Did she found the model?", "Did she finds the model?"], ["Choose the correct form: The dinosaur ___ very big.", "was", "were", "be"], ["Which sentence is correct?", "He went to the museum last Saturday.", "He goed to the museum last Saturday.", "He goes to the museum last Saturday."]], [["Which sentence is correct?", "This jacket is mine.", "This jacket is my.", "This jacket is me."], ["Choose the correct word: The blue trainers are ___.", "hers", "her", "she"], ["Which sentence is correct?", "That trophy is ours.", "That trophy is our.", "That trophy is we."], ["Choose the correct word: This is ___ racket.", "their", "theirs", "they"], ["Which sentence is correct?", "Is this pen yours?", "Is this pen your?", "Is this pen you?"]], [["Choose the correct sentence.", "We have to turn left.", "We has to turn left.", "We having to turn left."], ["Choose the correct question.", "Why are you late?", "Why you are late?", "Why do you late?"], ["Choose the correct answer.", "Because we got lost.", "Because we got lose.", "Because we are losted."], ["Choose the correct past form: We ___ to wait.", "had", "have", "has"], ["Which sentence is correct?", "Go straight on at the traffic lights.", "Go straight at the traffic lights on.", "Going straight on at the traffic lights."]], [["Choose the correct sentence.", "This bed is more comfortable than that one.", "This bed is comfortabler than that one.", "This bed is most comfortable than that one."], ["Choose the superlative.", "It is the most expensive chair.", "It is the more expensive chair.", "It is the expensivest chair."], ["Choose the correct comparative.", "A wooden chair is heavier than a plastic chair.", "A wooden chair is more heavy than a plastic chair.", "A wooden chair is heaviest than a plastic chair."], ["Which sentence is correct?", "This is the best bed in the shop.", "This is the better bed in the shop.", "This is the goodest bed in the shop."], ["Choose the correct form.", "The sofa is softer than the chair.", "The sofa is softest than the chair.", "The sofa is more softest than the chair."]], [["Choose the correct prediction.", "I think it will rain tomorrow.", "I think it rains tomorrow.", "I think it raining tomorrow."], ["Choose the negative.", "We won't be late.", "We don't will be late.", "We won't to be late."], ["Choose the correct question.", "Will you travel next year?", "Will you to travel next year?", "Do you will travel next year?"], ["Complete: I think she ___ win.", "will", "is", "does"], ["Choose the correct sentence.", "They will arrive at six.", "They will arriving at six.", "They will to arrive at six."]], [["Choose the correct sentence.", "How many tickets have you got?", "How much tickets have you got?", "How many ticket have you got?"], ["Choose the correct sentence.", "How much water is there?", "How many water is there?", "How much waters are there?"], ["Choose the correct word.", "There are some pencils on the desk.", "There are any pencils on the desk.", "There is some pencils on the desk."], ["Choose the correct question.", "Are there any tickets?", "Are there some tickets?", "Is there any tickets?"], ["Choose the correct sentence.", "I don't have much money.", "I don't have many money.", "I don't have much moneys."]], [["Choose the correct sentence.", "I watch cartoons to relax.", "I watch cartoons for relax.", "I watch cartoons to relaxing."], ["Choose the correct question.", "How often do you watch TV?", "How often you watch TV?", "How often are you watch TV?"], ["Choose the correct answer.", "I watch it twice a week.", "I watch it two a week.", "I twice watch it a week."], ["Choose the correct sentence.", "She uses the remote control to change the channel.", "She uses the remote control for change the channel.", "She uses the remote control to changing the channel."], ["Choose the correct frequency phrase.", "They usually watch the news.", "They watch usually the news.", "They watch the news usual."]], [["Choose the correct sentence.", "I've printed my homework.", "I printed have my homework.", "I've print my homework."], ["Choose the correct question.", "Have you saved the document?", "Did you have saved the document?", "Have you save the document?"], ["Choose the correct negative.", "She hasn't sent the message.", "She haven't sent the message.", "She hasn't send the message."], ["Choose the correct form.", "We have used the printer.", "We has used the printer.", "We have use the printer."], ["Which sentence is correct?", "He has already finished.", "He have already finished.", "He has already finish."]], [["Choose the correct question.", "Have you ever seen a volcano?", "Did you ever seen a volcano?", "Have you ever saw a volcano?"], ["Choose the correct answer.", "Yes, I have.", "Yes, I did have.", "Yes, I has."], ["Choose the correct negative.", "I've never been to a desert.", "I never have been to a desert.", "I've never be to a desert."], ["Complete: She has ___ visited Australia.", "never", "didn't", "wasn't"], ["Which sentence is correct?", "Have they ever climbed a mountain?", "Have they ever climb a mountain?", "Did they ever climbed a mountain?"]], [["Choose the best advice.", "You should drink more water.", "You should to drink more water.", "You should drinking more water."], ["Choose the negative advice.", "You shouldn't eat too much sugar.", "You don't should eat too much sugar.", "You shouldn't to eat too much sugar."], ["Complete: I feel sick. I ___ sit down.", "could", "should", "am"], ["Choose the correct sentence.", "He has a headache.", "He have a headache.", "He having a headache."], ["Choose the correct question.", "Should I take some medicine?", "Should I to take some medicine?", "Do I should take some medicine?"]], [["Choose the correct sentence.", "Please help me with the smoothie.", "Please help I with the smoothie.", "Please help my with the smoothie."], ["Choose the correct pronoun: I can see ___.", "him", "he", "his"], ["Choose the correct question.", "Who made this smoothie?", "Who did made this smoothie?", "Who make this smoothie?"], ["Choose the correct sentence.", "The blender, which is new, is very fast.", "The blender, who is new, is very fast.", "The blender which it is new is very fast."], ["Choose the correct pronoun: Give the recipe to ___.", "her", "she", "hers"]], [["Choose the correct sentence.", "We were fishing at five o'clock.", "We was fishing at five o'clock.", "We were fish at five o'clock."], ["Choose the correct question.", "What were you doing?", "What was you doing?", "What did you doing?"], ["Complete: She ___ born in 2012.", "was", "were", "is"], ["Choose the correct sentence.", "They were walking when it started to rain.", "They was walking when it started to rain.", "They were walk when it started to rain."], ["Choose the correct form.", "I was sleeping at ten.", "I were sleeping at ten.", "I was sleep at ten."]], [["Choose the correct sentence.", "I was working when my boss called.", "I were working when my boss called.", "I was work when my boss called."], ["Choose the correct sentence.", "They're in the office.", "Their in the office.", "There in the office."], ["Choose the correct word: The builders finished ___ work.", "their", "they're", "there"], ["Choose the correct sentence.", "There are two vets at the clinic.", "Their are two vets at the clinic.", "They're are two vets at the clinic."], ["Choose the correct sentence.", "The journalist was writing the story.", "The journalist were writing the story.", "The journalist was write the story."]]];
 const listens=[[["The waiter is carrying a menu.", "waiter"], ["I can see a bottle of water.", "bottle of water"], ["The customer is reading the menu.", "customer"], ["There is some olive oil on the table.", "olive oil"], ["The noodles are hot.", "noodles"]], [["We had a concert yesterday.", "concert"], ["She plays the drums.", "drums"], ["He has a violin.", "violin"], ["The audience is cheering.", "audience"], ["The band is on the stage.", "stage"]], [["We visited the dinosaur museum.", "dinosaur"], ["The museum is near the park.", "museum"], ["I can see a skeleton.", "skeleton"], ["The scientist found a fossil.", "scientist"], ["The asteroid was very big.", "asteroid"]], [["Our team won the game.", "team"], ["This jacket is mine.", "jacket"], ["These trainers are new.", "trainers"], ["The trophy is on the table.", "trophy"], ["The player scored a goal.", "player"]], [["Turn left at the corner.", "turn left"], ["The roundabout is ahead.", "roundabout"], ["Stop at the traffic light.", "traffic light"], ["We got lost in the city.", "get lost"], ["Go straight on.", "go straight on"]], [["This chair is comfortable.", "comfortable"], ["That sofa is expensive.", "expensive"], ["The table is wooden.", "wooden"], ["The room looks modern.", "modern"], ["The bed is enormous.", "enormous"]], [["The passenger is waiting.", "passenger"], ["My luggage is heavy.", "luggage"], ["I have my passport.", "passport"], ["The journey was long.", "journey"], ["We watched the fireworks.", "fireworks"]], [["I have ten minutes.", "minutes"], ["There are two hours left.", "hours"], ["I don't have much money.", "money"], ["We need four tickets.", "tickets"], ["There is some water.", "water"]], [["I watched a cartoon.", "cartoon"], ["We saw a documentary.", "documentary"], ["Change the channel.", "channel"], ["That advert is funny.", "advert"], ["Where is the remote control?", "remote control"]], [["The printer is next to the computer.", "printer"], ["The screen is bright.", "screen"], ["I use the keyboard.", "keyboard"], ["Open the website.", "website"], ["Save it on the memory stick.", "memory stick"]], [["The volcano is amazing.", "volcano"], ["We stayed in a village.", "village"], ["The rainforest is wet.", "rainforest"], ["The desert is hot.", "desert"], ["They went on an expedition.", "expedition"]], [["I have a headache.", "headache"], ["He has a cough.", "cough"], ["My earache is painful.", "earache"], ["She has a sore throat.", "sore throat"], ["Take your medicine.", "medicine"]], [["I made a strawberry smoothie.", "smoothie"], ["The blender is in the kitchen.", "blender"], ["Add a strawberry.", "strawberry"], ["Cut the mango.", "mango"], ["Follow the recipe.", "recipe"]], [["My wife was fishing.", "wife"], ["Her husband was at home.", "husband"], ["My niece is eight.", "niece"], ["His nephew is ten.", "nephew"], ["All our relatives came.", "relatives"]], [["The boss called me.", "boss"], ["She works in an office.", "office"], ["The builder is busy.", "builder"], ["The vet helped the dog.", "vet"], ["The journalist wrote a story.", "journalist"]]];
+
 let current=0, currentMode='words', q=0, score=0, opts=[], correct='';
+
 function shuffle(a){return [...a].sort(()=>Math.random()-0.5)}
-function speak(t){if('speechSynthesis' in window){speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.86;speechSynthesis.speak(u)}}
+
+function speak(text){
+  if(!('speechSynthesis' in window)){
+    showFeedback('⚠️ Аудио недоступно в этом браузере.');
+    return;
+  }
+  try{
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='en-US';
+    u.rate=.86;
+    u.pitch=1;
+    // iOS Safari can need an explicit resume after cancel().
+    if (speechSynthesis.resume) speechSynthesis.resume();
+    speechSynthesis.speak(u);
+  }catch(e){
+    showFeedback('⚠️ Не удалось включить аудио. Попробуй ещё раз.');
+  }
+}
+
+function showFeedback(msg){
+  const fb=document.getElementById('fb');
+  if(fb) fb.innerHTML='<div class="feedback">'+msg+'</div>';
+}
+
 function home(){
- currentMode='words';
+ currentMode='words'; q=0; score=0;
  document.getElementById('content').style.display='none';
  document.getElementById('home').style.display='block';
- document.getElementById('home').innerHTML='<div class="card"><span class="tag">Сегодняшняя миссия</span><h2>Unit 1 · '+units[0].title+'</h2><p class="muted">Words · Grammar · Listening · Speaking</p><button class="primary" onclick="openUnit(1)">Начать</button></div><h2>Units 1–15</h2><div class="unit-grid">'+units.map((u,i)=>'<button class="unit" onclick="openUnit('+(i+1)+')"><b>Unit '+u.n+' · '+u.title+'</b><br><span class="muted">'+u.topic+'</span></button>').join('')+'</div>';
+ const h=document.getElementById('home');
+ h.innerHTML='<div class="card"><span class="tag">Сегодняшняя миссия</span><h2>Unit 1 · '+units[0].title+'</h2><p class="muted">Words · Grammar · Listening · Speaking</p><button id="startUnit" class="primary">Начать</button></div><h2>Units 1–15</h2><div class="unit-grid">'+units.map((u,i)=>'<button class="unit" data-unit="'+(i+1)+'"><b>Unit '+u.n+' · '+u.title+'</b><br><span class="muted">'+u.topic+'</span></button>').join('')+'</div>';
+ document.getElementById('startUnit').addEventListener('click',()=>openUnit(1));
+ h.querySelectorAll('[data-unit]').forEach(b=>b.addEventListener('click',()=>openUnit(Number(b.dataset.unit))));
  setTabs();
 }
-function openUnit(n){current=n-1;q=0;score=0;document.getElementById('home').style.display='none';document.getElementById('content').style.display='block';render();window.scrollTo(0,0)}
-function setTabs(){
- ['Words','Grammar','Listen','Speak'].forEach(x=>document.getElementById('t'+x).classList.toggle('active',currentMode===x.toLowerCase()));
+
+function openUnit(n){
+ current=n-1; q=0; score=0;
+ document.getElementById('home').style.display='none';
+ document.getElementById('content').style.display='block';
+ render(); window.scrollTo(0,0);
 }
-function mode(m){currentMode=m;q=0;score=0;if(document.getElementById('content').style.display!=='none')render();setTabs()}
+
+function setTabs(){
+ ['Words','Grammar','Listen','Speak'].forEach(x=>{
+   const el=document.getElementById('t'+x);
+   el.classList.toggle('active',currentMode===x.toLowerCase());
+ });
+}
+
+function mode(m){
+ currentMode=m; q=0; score=0;
+ if(document.getElementById('content').style.display!=='none') render();
+ setTabs();
+}
+
 function render(){
  setTabs();
- let u=units[current];
+ const u=units[current];
  if(currentMode==='words') renderWords(u);
  if(currentMode==='grammar') renderGrammar(u);
  if(currentMode==='listen') renderListen(u);
  if(currentMode==='speak') renderSpeak(u);
 }
+
+function bindOptions(correctAnswer, values){
+ const box=document.getElementById('content');
+ box.querySelectorAll('.option').forEach(btn=>{
+   btn.addEventListener('click',()=>{
+     box.querySelectorAll('.option').forEach(x=>x.disabled=true);
+     const choice=btn.dataset.value;
+     const ok=choice===correctAnswer;
+     btn.classList.add(ok?'correct':'wrong');
+     const fb=document.getElementById('fb');
+     fb.innerHTML='<div class="feedback">'+(ok?'✅ Отлично!':'❌ Правильный ответ: <b>'+htmlEscape(correctAnswer)+'</b>')+'</div>';
+     if(ok) score++;
+     const nextBtn=document.getElementById('next');
+     if(nextBtn) nextBtn.style.display='inline-block';
+   });
+ });
+}
+
+function htmlEscape(v){
+ return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
 function renderWords(u){
  const target=u.vocab[q];
  const other=shuffle(units.filter((x,i)=>i!==current).flatMap(x=>x.vocab)).slice(0,3);
- opts=shuffle([target,...other]);correct=target;
- document.getElementById('content').innerHTML='<div class="card"><span class="tag">WORDS · '+(q+1)+'/5</span><h2>Выбери слово из темы: '+u.topic+'</h2><p class="muted">Одно слово относится к текущей теме.</p>'+opts.map((x,i)=>'<button class="option" onclick="answer(this,'+i+')">'+x+'</button>').join('')+'<div id="fb"></div><button id="next" class="primary" style="display:none;margin-top:14px" onclick="next()">Следующее →</button></div>';
+ opts=shuffle([target,...other]); correct=target;
+ const c=document.getElementById('content');
+ c.innerHTML='<div class="card"><span class="tag">WORDS · '+(q+1)+'/5</span><h2>Выбери слово из темы: '+htmlEscape(u.topic)+'</h2><p class="muted">Одно слово относится к текущей теме.</p>'+opts.map(x=>'<button class="option" data-value="'+htmlEscape(x)+'">'+htmlEscape(x)+'</button>').join('')+'<div id="fb"></div><button id="next" class="primary" style="display:none;margin-top:14px">Следующее →</button></div>';
+ bindOptions(correct,opts);
+ document.getElementById('next').addEventListener('click',next);
 }
+
 function renderGrammar(u){
  const a=grammar[current][q]; correct=a[1];
- document.getElementById('content').innerHTML='<div class="card"><span class="tag">GRAMMAR · '+(q+1)+'/5</span><div class="visual">'+['🍽️','🎵','🦖','🏆','🗺️'][q]+'</div><h2>'+a[0]+'</h2>'+[a[1],a[2],a[3]].sort(()=>Math.random()-.5).map(x=>'<button class="option" onclick="answer(this,'+JSON.stringify(x)+')">'+x+'</button>').join('')+'<div id="fb"></div><button id="next" class="primary" style="display:none;margin-top:14px" onclick="next()">Следующее →</button></div>';
+ const choices=shuffle([a[1],a[2],a[3]]);
+ const c=document.getElementById('content');
+ c.innerHTML='<div class="card"><span class="tag">GRAMMAR · '+(q+1)+'/5</span><div class="visual">'+['🍽️','🎵','🦖','🏆','🗺️'][q]+'</div><h2>'+htmlEscape(a[0])+'</h2>'+choices.map(x=>'<button class="option" data-value="'+htmlEscape(x)+'">'+htmlEscape(x)+'</button>').join('')+'<div id="fb"></div><button id="next" class="primary" style="display:none;margin-top:14px">Следующее →</button></div>';
+ bindOptions(correct,choices);
+ document.getElementById('next').addEventListener('click',next);
 }
+
 function renderListen(u){
- const a=listens[current][q];correct=a[1];
+ const a=listens[current][q]; correct=a[1];
  const other=shuffle(units.filter((x,i)=>i!==current).flatMap(x=>x.vocab)).slice(0,3);
  opts=shuffle([a[1],...other]);
- document.getElementById('content').innerHTML='<div class="card"><span class="tag">LISTENING · '+(q+1)+'/5</span><div class="listenbox"><button class="speakbtn" onclick="speak('+JSON.stringify(a[0])+')">🔊</button><h3>Нажми, чтобы прослушать</h3><p class="muted">Послушай предложение и выбери услышанное слово.</p></div><h2>Listen and choose the word you hear:</h2>'+opts.map((x,i)=>'<button class="option" onclick="answer(this,'+i+')">'+x+'</button>').join('')+'<div id="fb"></div><button id="next" class="primary" style="display:none;margin-top:14px" onclick="next()">Следующее →</button></div>';
+ const c=document.getElementById('content');
+ c.innerHTML='<div class="card"><span class="tag">LISTENING · '+(q+1)+'/5</span><div class="listenbox"><button id="audioBtn" class="speakbtn" aria-label="Прослушать">🔊</button><h3>Нажми, чтобы прослушать</h3><p class="muted">Послушай предложение и выбери услышанное слово.</p></div><h2>Listen and choose the word you hear:</h2>'+opts.map(x=>'<button class="option" data-value="'+htmlEscape(x)+'">'+htmlEscape(x)+'</button>').join('')+'<div id="fb"></div><button id="next" class="primary" style="display:none;margin-top:14px">Следующее →</button></div>';
+ document.getElementById('audioBtn').addEventListener('click',()=>speak(a[0]));
+ bindOptions(correct,opts);
+ document.getElementById('next').addEventListener('click',next);
 }
+
 function renderSpeak(u){
  const w=u.vocab[q];
- document.getElementById('content').innerHTML='<div class="card"><span class="tag">SPEAKING · '+(q+1)+'/5</span><h2>'+w+'</h2><div class="listenbox"><button class="speakbtn" onclick="speak('+JSON.stringify(w)+')">🔊</button><p class="muted">Послушай образец, затем произнеси слово.</p><button class="primary" onclick="recognize('+JSON.stringify(w)+')">🎙️ Проверить</button><div id="fb"></div></div></div>';
+ const c=document.getElementById('content');
+ c.innerHTML='<div class="card"><span class="tag">SPEAKING · '+(q+1)+'/5</span><h2>'+htmlEscape(w)+'</h2><div class="listenbox"><button id="speakSample" class="speakbtn" aria-label="Послушать образец">🔊</button><p class="muted">Послушай образец, затем произнеси слово.</p><button id="checkSpeak" class="primary">🎙️ Проверить</button><div id="fb"></div></div></div>';
+ document.getElementById('speakSample').addEventListener('click',()=>speak(w));
+ document.getElementById('checkSpeak').addEventListener('click',()=>recognize(w));
 }
-function answer(el,i){
- document.querySelectorAll('.option').forEach(x=>x.disabled=true);
- let choice=typeof i==='number'?opts[i]:i;
- let ok=choice===correct;
- el.classList.add(ok?'correct':'wrong');
- document.getElementById('fb').innerHTML='<div class="feedback">'+(ok?'✅ Отлично!':'❌ Правильный ответ: <b>'+correct+'</b>')+'</div>';
- if(ok)score++;
- document.getElementById('next').style.display='inline-block';
-}
+
 function next(){
  q++;
- if(q>=5){document.getElementById('content').innerHTML='<div class="card"><span class="tag">'+currentMode.toUpperCase()+' · 5/5</span><h2>🏆 Unit завершён!</h2><p>Результат: <b>'+score+'/5</b></p><button class="primary" onclick="openUnit('+(current+1)+')">Повторить Unit</button></div>';return}
+ if(q>=5){
+   const c=document.getElementById('content');
+   c.innerHTML='<div class="card"><span class="tag">'+currentMode.toUpperCase()+' · 5/5</span><h2>🏆 Unit завершён!</h2><p>Результат: <b>'+score+'/5</b></p><button id="repeat" class="primary">Повторить Unit</button></div>';
+   document.getElementById('repeat').addEventListener('click',()=>openUnit(current+1));
+   return;
+ }
  render();
 }
+
 function recognize(target){
  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!SR){document.getElementById('fb').innerHTML='<div class="feedback">⚠️ Распознавание речи недоступно в этом браузере.</div>';return}
- const r=new SR();r.lang='en-US';r.interimResults=false;r.maxAlternatives=1;
- r.onresult=e=>{const said=e.results[0][0].transcript.toLowerCase().trim();const ok=said===target.toLowerCase();document.getElementById('fb').innerHTML='<div class="feedback">'+(ok?'✅ Отлично!':'🔁 Ты сказал: '+said+'<br>Попробуй ещё раз.')+'</div>'};
- r.onerror=()=>document.getElementById('fb').innerHTML='<div class="feedback">⚠️ Не удалось распознать. Разреши микрофон и попробуй ещё раз.</div>';
- r.start();
+ if(!SR){
+   showFeedback('⚠️ Распознавание речи недоступно в этом браузере. Для Speaking нужен браузер с поддержкой микрофона.');
+   return;
+ }
+ try{
+   const r=new SR();
+   r.lang='en-US'; r.interimResults=false; r.maxAlternatives=1;
+   r.onresult=e=>{
+     const said=e.results[0][0].transcript.toLowerCase().trim();
+     const ok=said===target.toLowerCase();
+     showFeedback(ok?'✅ Отлично!':'🔁 Ты сказал: '+htmlEscape(said)+'<br>Попробуй ещё раз.');
+   };
+   r.onerror=()=>showFeedback('⚠️ Не удалось распознать. Разреши микрофон и попробуй ещё раз.');
+   r.start();
+ }catch(e){
+   showFeedback('⚠️ Не удалось запустить микрофон. Проверь разрешение браузера.');
+ }
 }
+
+document.getElementById('tWords').addEventListener('click',()=>mode('words'));
+document.getElementById('tGrammar').addEventListener('click',()=>mode('grammar'));
+document.getElementById('tListen').addEventListener('click',()=>mode('listen'));
+document.getElementById('tSpeak').addEventListener('click',()=>mode('speak'));
+document.querySelector('footer button:nth-child(1)').addEventListener('click',home);
+document.querySelector('footer button:nth-child(2)').addEventListener('click',home);
+document.querySelector('footer button:nth-child(3)').addEventListener('click',home);
+document.querySelector('.back').addEventListener('click',home);
 home();
+
 </script>
 </body></html>
